@@ -13,7 +13,10 @@ logger = logging.getLogger(__name__)
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        for alert_channel in AlertChannel.objects.filter(active=True):
+        active_channels = AlertChannel.objects.filter(active=True)
+        logger.info('Got {} Active Channels'.format(active_channels.count()))
+
+        for alert_channel in active_channels:
             # check if we need to set the priority to urgent
             if alert_channel.set_active + alert_channel.time_to_urgent < now():
                 if alert_channel.priority != priorities[3][0]:
