@@ -3,4 +3,14 @@
 #main-title {
     font-family: 'Indie Flower', cursive;
     font-size: 5.5rem;
+    color: #090909;
+}
+
+#main-title a:visited {
+    color: #090909;
+}
+
+#main-title a:hover {
+    color: #090909;
+    text-decoration: none;
 }
