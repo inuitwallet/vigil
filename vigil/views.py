@@ -35,7 +35,7 @@ class AlertView(View):
         """
         alert_channel = get_object_or_404(
             AlertChannel,
-            alert_id__startswith=alert_channel_uuid
+            alert_id=alert_channel_uuid
         )
 
         message_type = 'update_alert'
