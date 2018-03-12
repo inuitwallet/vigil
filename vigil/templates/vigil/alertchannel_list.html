@@ -1,0 +1,41 @@
+{% extends 'vigil/base.html' %}
+
+{% block title %}
+Alert List
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col">
+            <form action="{% url 'acknowledge' %}" method="POST">
+                {% csrf_token %}
+                <table class="table table-sm table-striped table-hover active-alerts">
+                    <thead>
+                        <tr>
+                            <td>Id</td>
+                            <td>Name</td>
+                            <td>Title</td>
+                            <td>Message</td>
+                            <td>Priority</td>
+                            <td>Open</td>
+                            <td>Acknowledge</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for alert in object_list %}
+                            {% include 'vigil/fragments/alert_channel.html' %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <div class="form-group text-right">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block endbodyjs %}
+    {% load static %}
+    <script type="text/javascript" src='{% static 'vigil/js/alert_list.js' %}'></script>
+{% endblock %}

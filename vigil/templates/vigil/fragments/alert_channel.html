@@ -1,0 +1,22 @@
+<tr id="{{ alert.alert_id }}">
+    <td>
+        {% if user.is_authenticated %}
+            <a href="{% url 'alert_update' pk=alert.id %}">
+        {% endif %}
+            {{ alert.alert_id|stringformat:"s"|slice:":8" }}
+        {% if user.is_authenticated %}
+            </a>
+        {% endif %}
+    </td>
+    <td>{{ alert.name }}</td>
+    <td>{{ alert.title }}</td>
+    <td>{{ alert.message }}</td>
+    <td>{{ alert.priority }}</td>
+    <td>{{ alert.set_active|timesince }}</td>
+    <td>
+        {% if user.is_authenticated %}
+            <input type="checkbox" value="{{ alert.alert_id }}" name="acknowledge_alerts"/>
+        {% endif %}
+    </td>
+</tr>
+
