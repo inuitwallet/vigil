@@ -31,15 +31,17 @@ class Command(BaseCommand):
                         alert_action.task.name
                     )
                 )
-                trigger_time = alert_action.last_triggered + alert_channel.repeat_time
 
-                if trigger_time > now():
-                    logger.warning(
-                        'Not yet reached trigger time. Wait another {}'.format(
-                            trigger_time - now()
+                if alert_action.last_triggered:
+                    trigger_time = alert_action.last_triggered + alert_channel.repeat_time
+
+                    if trigger_time > now():
+                        logger.warning(
+                            'Not yet reached trigger time. Wait another {}'.format(
+                                trigger_time - now()
+                            )
                         )
-                    )
-                    continue
+                        continue
 
                 task = getattr(tasks, alert_action.task.name)
 
