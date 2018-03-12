@@ -27,9 +27,11 @@ Alert List
                         {% endfor %}
                     </tbody>
                 </table>
-                <div class="form-group text-right">
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </div>
+                {% if user.is_authenticated %}
+                    <div class="form-group text-right">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                {% endif %}
             </form>
         </div>
     </div>
