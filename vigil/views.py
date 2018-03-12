@@ -100,3 +100,4 @@ class AlertsAcknowledge(View):
 class AlertUpdateView(UpdateView):
     model = AlertChannel
     fields = ['name', 'actions', 'repeat_time', 'time_to_urgent']
+    success_url = '/'
