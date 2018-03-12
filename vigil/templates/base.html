@@ -6,6 +6,7 @@
 
     {% load static %}
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'vigil/css/main.css' %}" >
 
     {% block headjs %}
     {% endblock %}
@@ -13,9 +14,33 @@
 </head>
 <body>
     <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-8">
+                <div>
+                    <h1 id="main-title" class="font-effect-anaglyph">Vigil</h1>
+                </div>
+            </div>
+            <div class="col-md-4 text-right">
+                <nav>
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'logout' %}">Logout</a>
+                    {% else %}
+                        <a href="{% url 'login' %}">Login</a>
+                    {% endif %}
+                </nav>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-10 offset-md-1">
+                {% block content %}
+                {% endblock %}
+            </div>
+        </div>
+        <div class="row">
+            <footer>
 
-        {% block content %}
-        {% endblock %}
+            </footer>
+        </div>
 
     </div>
 

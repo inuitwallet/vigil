@@ -69,12 +69,6 @@ class AlertView(View):
                 "type": "update_alert_list",
                 "message_type": message_type,
                 "alert_id": str(alert_channel.alert_id),
-                "html": render_to_string(
-                    'vigil/fragments/alert_channel.html',
-                    {
-                        'alert': alert_channel
-                    }
-                )
             }
         )
 

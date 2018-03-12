@@ -15,7 +15,7 @@
     <td>{{ alert.set_active|timesince }}</td>
     <td>
         {% if user.is_authenticated %}
-            <input type="checkbox" value="{{ alert.alert_id }}" name="acknowledge_alerts"/>
+            <input type="checkbox" value="{{ alert.alert_id }}" name="acknowledge_alerts" style="margin: 0 auto;" />
         {% endif %}
     </td>
 </tr>
