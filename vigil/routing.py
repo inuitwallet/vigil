@@ -6,6 +6,7 @@ from vigil import consumers
 
 websocket_urlpatterns = [
     url(r'^alert_list/$', consumers.AlertListConsumer),
+    url(r'^alert_detail/(?P<alert_channel_pk>[^/]+)/$', consumers.AlertDetailConsumer),
 ]
 
 application = ProtocolTypeRouter({

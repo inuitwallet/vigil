@@ -7,7 +7,7 @@ from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 
 from vigil.globals import priorities
-from vigil.models import AlertChannel
+from vigil.models import AlertChannel, HistoricalAlert
 
 
 class AlertsAcknowledge(View):
@@ -75,11 +75,27 @@ class AlertVigil(View):
 
         channel_layer = get_channel_layer()
         async_to_sync(channel_layer.group_send)(
-            "alert_list",
+            'alert_list',
             {
-                "type": "update_alert_list",
-                "message_type": message_type,
-                "alert_id": str(alert_channel.alert_id),
+                'type': 'update_alert_list',
+                'message_type': message_type,
+                'alert_id': str(alert_channel.alert_id),
+            }
+        )
+
+        # create a history point
+        historical_alert = HistoricalAlert.objects.create(
+            alert_channel=alert_channel,
+            title=alert_channel.title,
+            message=alert_channel.message,
+            priority=alert_channel.priority,
+            updated=(message_type == 'update_alert')
+        )
+        async_to_sync(channel_layer.group_send)(
+            'alert_detail_{}'.format(alert_channel.pk),
+            {
+                'type': 'update_historical_alerts',
+                'historical_alert_pk': historical_alert.pk
             }
         )
 

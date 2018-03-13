@@ -1,0 +1,17 @@
+{% load static %}
+
+<tr>
+    <td>
+        {{ historical_alert.alert_created|timesince }} ago
+    </td>
+    <td>
+        {{ historical_alert.title }}
+    </td>
+    <td>
+        {% if historical_alert.updated %}
+            <img src="{% static 'vigil/img/svg/issue-reopened.svg' %}" />
+        {% else %}
+            <img src="{% static 'vigil/img/svg/issue-opened.svg' %}" />
+        {% endif %}
+    </td>
+</tr>

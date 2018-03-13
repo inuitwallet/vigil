@@ -54,7 +54,24 @@ urlpatterns = [
         name='all_alert_actions_list'
     ),
 
+    # Detail
+    path(
+        'alert/<int:pk>',
+        views.AlertChannelDetailView.as_view(),
+        name='alert_detail'
+    ),
+
     # Create
+    path(
+        'alert/create',
+        views.AlertChannelCreateView.as_view(),
+        name='alert_create'
+    ),
+    path(
+        'alert_action/create',
+        views.AlertActionCreateView.as_view(),
+        name='alert_action_create'
+    ),
 
     # Edit
     path(
@@ -66,5 +83,17 @@ urlpatterns = [
         'alert_action/<int:pk>/edit',
         views.AlertActionUpdateView.as_view(),
         name='alert_action_update'
+    ),
+
+    # Delete
+    path(
+        'alert/<int:pk>/delete',
+        views.AlertChannelDeleteView.as_view(),
+        name='alert_delete'
+    ),
+    path(
+        'alert_action/<int:pk>/delete',
+        views.AlertActionDeleteView.as_view(),
+        name='alert_action_delete'
     )
 ]

@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ object.name }} Detail
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-8">
+            <h1>The "{{ object.name }}" Alert Channel</h1>
+            <div class="form-group">
+                <label for="api-id" class="control-label">API id</label>
+                <input id="api-id" class="form-control" type="text" readonly value="{{ object.alert_id }}" aria-describedby="api-id-help" />
+                <p id="api-id-help" class="help-block">Use this id to activate {{ object.name }} via the API</p>
+            </div>
+            <div class="form-group">
+                <label for="alert-actions" class="control-label">Alert Actions</label>
+                {% for alert_action in object.actions.all %}
+                    <a href="#" class="form-control" aria-describedby="alert-actions-help">{{ alert_action.name }} - {{ alert_action.description }}</a>
+                {% endfor %}
+                <p id="alert-actions-help" class="help-block">These actions will be triggered when {{ object.name }} is active</p>
+            </div>
+            <a href="{% url 'alert_update' pk=object.pk %}" role="button" class="btn btn-dark">Edit</a>
+            <a href="{% url 'alert_delete' pk=object.pk %}" role="button" class="btn btn-outline-danger">Delete</a>
+        </div>
+        <div class="col text-center">
+            <h3>History</h3>
+            <div id="historical-alerts-container">
+                <table class="table table-striped table-hover historical-alerts">
+                    <tbody>
+                        {% for historical_alert in object.historicalalert_set.all %}
+                            {% include 'vigil/fragments/historical_alert.html' %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block endbodyjs %}
+    <script>
+        $(function() {
+            var alert_channel_pk = {{ object.pk }};
+            const webSocketBridge = new channels.WebSocketBridge();
+            webSocketBridge.connect("/alert_detail/"+alert_channel_pk+"/");
+
+            webSocketBridge.socket.addEventListener('open', function() {
+                webSocketBridge.listen(function(data) {
+                    $(data["html"]).prependTo(".historical-alerts > tbody");
+                });
+            });
+        });
+    </script>
+{% endblock %}

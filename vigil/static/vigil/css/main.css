@@ -32,3 +32,16 @@ nav a:hover {
 thead {
     color: #9d9d9d
 }
+
+.control-label {
+    font-weight: 700;
+}
+
+.help-block {
+    opacity: 0.5;
+}
+
+#historical-alerts-container {
+    max-height: 500px;
+    overflow-y: scroll;
+}

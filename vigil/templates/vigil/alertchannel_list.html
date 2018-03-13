@@ -13,13 +13,14 @@ Active Alert Channels
                     <caption>Active Alert Channels</caption>
                     <thead class="thead-dark bg-dark">
                         <tr>
-                            <td scope="col">Id</td>
                             <td scope="col">Name</td>
                             <td scope="col">Title</td>
                             <td scope="col">Message</td>
                             <td scope="col">Priority</td>
-                            <td scope="col">Open</td>
-                            <td scope="col">Acknowledge</td>
+                            <td scope="col">Open for</td>
+                            {% if user.is_authenticated %}
+                                <td scope="col">Acknowledge</td>
+                            {% endif %}
                         </tr>
                     </thead>
                     <tbody>
@@ -40,5 +41,23 @@ Active Alert Channels
 
 {% block endbodyjs %}
     {% load static %}
-    <script type="text/javascript" src='{% static 'vigil/js/alert_list.js' %}'></script>
+    <script>
+        $(function() {
+            const webSocketBridge = new channels.WebSocketBridge();
+            webSocketBridge.connect('/alert_list/');
+
+            webSocketBridge.socket.addEventListener('open', function() {
+                webSocketBridge.listen(function(data) {
+                    if (data["message_type"] === "update_alert") {
+                        var row = $('#' + data["alert_id"]);
+                        row.remove();
+                        $(data['html']).prependTo(".active-alerts > tbody");
+                    }
+                    if (data["message_type"] === 'new_alert') {
+                        $(data['html']).prependTo(".active-alerts > tbody");
+                    }
+                });
+            });
+        });
+    </script>
 {% endblock %}

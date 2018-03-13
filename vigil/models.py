@@ -104,7 +104,8 @@ class AlertChannel(models.Model):
     actions = models.ManyToManyField(
         AlertAction,
         blank=True,
-        help_text='What actions to attach to this Alert Channel'
+        help_text='Which Alert Actions are attached to this Alert Channel\n'
+                  '(highlighted entries are added. Ctrl+select to choose multiple)'
     )
     repeat_time = models.DurationField(
         default=timedelta(minutes=15),
@@ -119,3 +120,39 @@ class AlertChannel(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class HistoricalAlert(models.Model):
+    alert_channel = models.ForeignKey(
+        AlertChannel,
+        on_delete=models.CASCADE
+    )
+    title = models.CharField(
+        max_length=500,
+        blank=True,
+        null=True,
+        editable=False
+    )
+    message = models.TextField(
+        blank=True,
+        null=True,
+        editable=False
+    )
+    priority = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True,
+        choices=priorities,
+        editable=False
+    )
+    alert_created = models.DateTimeField(
+        auto_now_add=True,
+        editable=False
+    )
+    updated = models.BooleanField(
+        default=False,
+        editable=False
+    )
+
+    def __str__(self):
+        return '{} - {}'.format(self.alert_created, self.title)

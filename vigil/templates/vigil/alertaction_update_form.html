@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% load bootstrap %}
+
+{% block title %}
+    Edit {{ object.name }} Action
+{% endblock %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+        <form action="" method="post" class="form-horizontal">
+            <legend>Update the "{{ object.name }}" Alert Action</legend>
+            {% csrf_token %}
+            {{ form|bootstrap_horizontal }}
+            <div class="form-group">
+                <button type="submit" class="btn btn-dark">Save</button>
+                <a href="{% url 'alert_action_delete' pk=object.pk %}" role="button" class="btn btn-secondary">Delete</a>
+            </div>
+        </form>
+    {% else %}
+        <h1>You need to be <a href="{% url 'login' %}">Logged In</a> to edit an Alert Action</h1>
+    {% endif %}
+{% endblock %}
