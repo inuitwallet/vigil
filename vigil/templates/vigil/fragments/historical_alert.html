@@ -4,14 +4,14 @@
     <td>
         {{ historical_alert.alert_created|timesince }} ago
     </td>
-    <td>
+    <td data-toggle="tooltip" data-placement="bottom" title="{{ historical_alert.message }}">
         {{ historical_alert.title }}
     </td>
     <td>
         {% if historical_alert.updated %}
-            <img src="{% static 'vigil/img/svg/issue-reopened.svg' %}" />
+            <img src="{% static 'vigil/img/svg/issue-reopened.svg' %}" data-toggle="tooltip" data-placement="bottom" title="Alert was already open" />
         {% else %}
-            <img src="{% static 'vigil/img/svg/issue-opened.svg' %}" />
+            <img src="{% static 'vigil/img/svg/issue-opened.svg' %}" data-toggle="tooltip" data-placement="bottom" title="Alert was newly opened" />
         {% endif %}
     </td>
 </tr>
