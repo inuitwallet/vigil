@@ -1,0 +1,14 @@
+<tr>
+    <td>
+        {% if user.is_authenticated %}
+            <a href="{% url 'alert_action_update' pk=alert_action.id %}">
+        {% endif %}
+            {{ alert_action.name }}
+        {% if user.is_authenticated %}
+            </a>
+        {% endif %}
+    </td>
+    <td>{{ alert_action.description }}</td>
+    <td>{{ alert_action.last_triggered }}</td>
+    <td>{{ alert_action.task }}</td>
+</tr>

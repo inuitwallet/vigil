@@ -1,21 +1,32 @@
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 from django.http import JsonResponse
-from django.shortcuts import get_object_or_404, redirect
-from django.template.loader import render_to_string
+from django.shortcuts import redirect, get_object_or_404
 from django.utils.timezone import now
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
-from django.views.generic import ListView, UpdateView
 
 from vigil.globals import priorities
 from vigil.models import AlertChannel
 
 
-class AlertView(View):
+class AlertsAcknowledge(View):
+    @staticmethod
+    def post(request):
+        for alert_id in request.POST.getlist('acknowledge_alerts'):
+            try:
+                alert = AlertChannel.objects.get(alert_id=alert_id)
+                alert.active = False
+                alert.save()
+            except AlertChannel.DoesNotExist:
+                continue
+        return redirect('alert_list')
+
+
+class AlertVigil(View):
     @csrf_exempt
     def dispatch(self, request, *args, **kwargs):
-        return super(AlertView, self).dispatch(request, *args, **kwargs)
+        return super(AlertVigil, self).dispatch(request, *args, **kwargs)
 
     @staticmethod
     def post(request, alert_channel_uuid):
@@ -73,31 +84,3 @@ class AlertView(View):
         )
 
         return JsonResponse({'success': True})
-
-
-class ShowAlertsView(ListView):
-    model = AlertChannel
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['object_list'] = AlertChannel.objects.filter(active=True)
-        return context
-
-
-class AlertsAcknowledge(View):
-    @staticmethod
-    def post(request):
-        for alert_id in request.POST.getlist('acknowledge_alerts'):
-            try:
-                alert = AlertChannel.objects.get(alert_id=alert_id)
-                alert.active = False
-                alert.save()
-            except AlertChannel.DoesNotExist:
-                continue
-        return redirect('alert_list')
-
-
-class AlertUpdateView(UpdateView):
-    model = AlertChannel
-    fields = ['name', 'actions', 'repeat_time', 'time_to_urgent']
-    success_url = '/'

@@ -14,3 +14,21 @@
     color: #090909;
     text-decoration: none;
 }
+
+nav a {
+    color: #090909;
+    /*padding: 10px;*/
+}
+
+nav a:visited {
+    color: #090909;
+}
+
+nav a:hover {
+    color: #090909;
+    text-decoration: none;
+}
+
+thead {
+    color: #9d9d9d
+}

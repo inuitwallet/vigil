@@ -1,0 +1,18 @@
+{% load static %}
+
+<tr id="{{ alert.alert_id }}">
+    <td>
+        {% if user.is_authenticated %}
+            <a href="{% url 'alert_update' pk=alert.id %}">
+        {% endif %}
+            {{ alert.alert_id|stringformat:"s"|slice:":8" }}
+        {% if user.is_authenticated %}
+            </a>
+        {% endif %}
+    </td>
+    <td>{{ alert.name }}</td>
+    <td>{% if alert.active %}<img src="{% static 'vigil/img/svg/check.svg' %}" />{% endif %}</td>
+    <td>{{ alert.repeat_time }}</td>
+    <td>{{ alert.time_to_urgent }}</td>
+</tr>
+
