@@ -11,14 +11,24 @@
             <div class="form-group">
                 <label for="api-id" class="control-label">API id</label>
                 <input id="api-id" class="form-control" type="text" readonly value="{{ object.alert_id }}" aria-describedby="api-id-help" />
-                <p id="api-id-help" class="help-block">Use this id to activate {{ object.name }} via the API</p>
+                <p id="api-id-help" class="help-block">Use this id to reference <em>{{ object.name }}</em> via the API</p>
             </div>
             <div class="form-group">
                 <label for="alert-actions" class="control-label">Alert Actions</label>
                 {% for alert_action in object.actions.all %}
-                    <a href="#" class="form-control" aria-describedby="alert-actions-help">{{ alert_action.name }} - {{ alert_action.description }}</a>
+                    <a href="{% url 'alert_action_detail' pk=alert_action.pk %}" class="form-control" aria-describedby="alert-actions-help">{{ alert_action.name }} - {{ alert_action.description }}</a>
                 {% endfor %}
-                <p id="alert-actions-help" class="help-block">These actions will be triggered when {{ object.name }} is active</p>
+                <p id="alert-actions-help" class="help-block">These actions will be triggered when <em>{{ object.name }}</em> is active</p>
+            </div>
+            <div class="form-group">
+                <label for="repeat-time" class="control-label">Repeat Time</label>
+                <input id="repeat-time" class="form-control" type="text" readonly value="{{ object.repeat_time }}" aria-describedby="repeat-time-help" />
+                <p id="repeat-time-help" class="help-block">Notifications will be sent this frequently</p>
+            </div>
+            <div class="form-group">
+                <label for="time-to-urgent" class="control-label">Time to URGENT</label>
+                <input id="time-to-urgent" class="form-control" type="text" readonly value="{{ object.time_to_urgent }}" aria-describedby="time-to-urgent-help" />
+                <p id="time-to-urgent-help" class="help-block">After this long, notifications will be makred as URGENT</p>
             </div>
             <a href="{% url 'alert_update' pk=object.pk %}" role="button" class="btn btn-dark">Edit</a>
             <a href="{% url 'alert_delete' pk=object.pk %}" role="button" class="btn btn-outline-danger">Delete</a>

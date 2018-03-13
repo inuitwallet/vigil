@@ -7,8 +7,7 @@
 {% endblock %}
 
 {% block content %}
-    {% if user.is_authenticated %}
-        <form action="" method="post" class="form-horizontal">
+    <form action="" method="post" class="form-horizontal">
             <legend>Create a new Alert Action</legend>
             {% csrf_token %}
             {{ form|bootstrap_horizontal }}
@@ -16,7 +15,4 @@
                 <button type="submit" class="btn btn-dark">Save</button>
             </div>
         </form>
-    {% else %}
-        <h1>You need to be <a href="{% url 'login' %}">Logged In</a> to create a new Alert Action</h1>
-    {% endif %}
 {% endblock %}

@@ -60,6 +60,11 @@ urlpatterns = [
         views.AlertChannelDetailView.as_view(),
         name='alert_detail'
     ),
+    path(
+        'alert_action/<int:pk>',
+        views.AlertActionDetailView.as_view(),
+        name='alert_action_detail'
+    ),
 
     # Create
     path(

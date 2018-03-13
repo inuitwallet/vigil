@@ -2,7 +2,7 @@
 
 <tr>
     <td>
-        <button class="btn btn-light" data-toggle="popover" title="{{ historical_alert.title }}" data-content="{{ historical_alert.message }}" data-trigger="focus">
+        <button class="btn btn-light" data-toggle="popover" title="{{ historical_alert.title }}" data-content="{{ historical_alert.message }}" data-trigger="focus" data-placement="left" data-container="body">
             {{ historical_alert.alert_created|timesince }} ago
         </button>
     </td>

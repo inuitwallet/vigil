@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ object.name }} Detail
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-8">
+            <h1>The "{{ object.name }}" Alert Action</h1>
+            <div class="form-group">
+                <label for="description" class="control-label">Description</label>
+                <textarea id="description" class="form-control" readonly>{{ object.description }}</textarea>
+            </div>
+            <div class="form-group">
+                <label for="last-triggered" class="control-label">Last Triggered</label>
+                <input id="last-triggered" class="form-control" type="text" readonly value="{{ object.last_triggered }}" />
+            </div>
+            <div class="form-group">
+                <label for="task" class="control-label">Associated Task</label>
+                <input id="task" class="form-control" type="text" readonly value="{{ object.task }}" />
+            </div>
+            <div class="form-group">
+                <label for="data" class="control-label">Task Data</label>
+                <textarea id="data" class="form-control" readonly>{{ object.data }}</textarea>
+            </div>
+            <a href="{% url 'alert_action_update' pk=object.pk %}" role="button" class="btn btn-dark">Edit</a>
+            <a href="{% url 'alert_action_delete' pk=object.pk %}" role="button" class="btn btn-outline-danger">Delete</a>
+        </div>
+    </div>
+{% endblock %}
+
+{% block endbodyjs %}
+    <script>
+        $(function() {
+            var alert_channel_pk = {{ object.pk }};
+            const webSocketBridge = new channels.WebSocketBridge();
+            webSocketBridge.connect("/alert_detail/"+alert_channel_pk+"/");
+
+            webSocketBridge.socket.addEventListener('open', function() {
+                webSocketBridge.listen(function(data) {
+                    $(data["html"]).prependTo(".historical-alerts > tbody");
+                    $('[data-toggle="tooltip"]').tooltip();
+                    $('[data-toggle="popover"]').popover();
+                });
+            });
+        });
+    </script>
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+            $('[data-toggle="popover"]').popover();
+        })
+    </script>
+{% endblock %}

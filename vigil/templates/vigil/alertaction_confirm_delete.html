@@ -7,14 +7,10 @@
 {% endblock %}
 
 {% block content %}
-    {% if user.is_authenticated %}
-        <form action="" method="post">
-            {% csrf_token %}
-            <legend>Are you sure you want to delete the "{{ object.name }}" Alert Action?</legend>
-            <button class="btn btn-dark" type="submit" value="Confirm">Confirm</button>
-            <a class="btn btn-secondary" role="button" href="{% url 'all_alert_actions_list' %}">Back</a>
-        </form>
-    {% else %}
-        <h1>You need to be <a href="{% url 'login' %}">Logged In</a> to delete an Alert Action</h1>
-    {% endif %}
+    <form action="" method="post">
+        {% csrf_token %}
+        <legend>Are you sure you want to delete the "{{ object.name }}" Alert Action?</legend>
+        <button class="btn btn-dark" type="submit" value="Confirm">Confirm</button>
+        <a class="btn btn-secondary" role="button" href="{% url 'alert_action_detail' pk=object.pk %}">Back</a>
+    </form>
 {% endblock %}

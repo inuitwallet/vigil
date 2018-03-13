@@ -58,6 +58,7 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'vigil.urls'
 
 LOGIN_REDIRECT_URL = 'alert_list'
+LOGIN_URL = 'login'
 
 TEMPLATES = [
     {

@@ -7,8 +7,7 @@
 {% endblock %}
 
 {% block content %}
-    {% if user.is_authenticated %}
-        <form action="" method="post" class="form-horizontal">
+    <form action="" method="post" class="form-horizontal">
             <legend>Update the "{{ object.name }}" Alert Channel</legend>
             {% csrf_token %}
             {{ form|bootstrap_horizontal }}
@@ -17,7 +16,4 @@
                 <a href="{% url 'alert_detail' pk=object.pk %}" role="button" class="btn btn-secondary">Back</a>
             </div>
         </form>
-    {% else %}
-        <h1>You need to be <a href="{% url 'login' %}">Logged In</a> to edit an Alert Channel</h1>
-    {% endif %}
 {% endblock %}

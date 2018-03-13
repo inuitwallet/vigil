@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import ListView, UpdateView, CreateView, DeleteView, DetailView
 
@@ -15,30 +16,34 @@ class ShowActiveAlertsView(ListView):
         return context
 
 
-class ShowAllAlertsView(ListView):
+class ShowAllAlertsView(LoginRequiredMixin, ListView):
     model = AlertChannel
     template_name_suffix = '_list_all'
 
 
-class AlertChannelDetailView(DetailView):
+class AlertChannelDetailView(LoginRequiredMixin, DetailView):
     model = AlertChannel
 
 
-class AlertChannelUpdateView(UpdateView):
+class AlertChannelUpdateView(LoginRequiredMixin, UpdateView):
     model = AlertChannel
     template_name_suffix = '_update_form'
     fields = ['name', 'actions', 'repeat_time', 'time_to_urgent']
-    success_url = reverse_lazy('all_alert_list')
+
+    def get_success_url(self):
+        return reverse_lazy('alert_detail', kwargs={'pk': self.object.pk})
 
 
-class AlertChannelCreateView(CreateView):
+class AlertChannelCreateView(LoginRequiredMixin, CreateView):
     model = AlertChannel
     template_name_suffix = '_create_form'
     fields = ['name', 'actions', 'repeat_time', 'time_to_urgent']
-    success_url = reverse_lazy('all_alert_list')
+
+    def get_success_url(self):
+        return reverse_lazy('alert_detail', kwargs={'pk': self.object.pk})
 
 
-class AlertChannelDeleteView(DeleteView):
+class AlertChannelDeleteView(LoginRequiredMixin, DeleteView):
     model = AlertChannel
     success_url = reverse_lazy('all_alert_list')
 
@@ -46,24 +51,32 @@ class AlertChannelDeleteView(DeleteView):
 # Alert Actions
 
 
-class ShowAllAlertActionsView(ListView):
+class ShowAllAlertActionsView(LoginRequiredMixin, ListView):
     model = AlertAction
 
 
-class AlertActionUpdateView(UpdateView):
+class AlertActionDetailView(LoginRequiredMixin, DetailView):
+    model = AlertAction
+
+
+class AlertActionUpdateView(LoginRequiredMixin, UpdateView):
     model = AlertAction
     template_name_suffix = '_update_form'
-    fields = ['name', 'description', 'data', 'task']
-    success_url = reverse_lazy('all_alert_actions_list')
+    fields = ['name', 'description', 'task', 'data']
+
+    def get_success_url(self):
+        return reverse_lazy('alert_action_detail', kwargs={'pk': self.object.pk})
 
 
-class AlertActionCreateView(CreateView):
+class AlertActionCreateView(LoginRequiredMixin, CreateView):
     model = AlertAction
     template_name_suffix = '_create_form'
-    fields = ['name', 'description', 'data', 'task']
-    success_url = reverse_lazy('all_alert_actions_list')
+    fields = ['name', 'description', 'task', 'data']
+
+    def get_success_url(self):
+        return reverse_lazy('alert_action_detail', kwargs={'pk': self.object.pk})
 
 
-class AlertActionDeleteView(DeleteView):
+class AlertActionDeleteView(LoginRequiredMixin, DeleteView):
     model = AlertAction
     success_url = reverse_lazy('all_alert_actions_list')
