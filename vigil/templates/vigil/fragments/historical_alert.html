@@ -2,10 +2,9 @@
 
 <tr>
     <td>
-        {{ historical_alert.alert_created|timesince }} ago
-    </td>
-    <td data-toggle="tooltip" data-placement="bottom" title="{{ historical_alert.message }}">
-        {{ historical_alert.title }}
+        <button class="btn btn-light" data-toggle="popover" title="{{ historical_alert.title }}" data-content="{{ historical_alert.message }}" data-trigger="focus">
+            {{ historical_alert.alert_created|timesince }} ago
+        </button>
     </td>
     <td>
         {% if historical_alert.updated %}

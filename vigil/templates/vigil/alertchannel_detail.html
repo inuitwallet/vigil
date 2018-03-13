@@ -48,13 +48,16 @@
             webSocketBridge.socket.addEventListener('open', function() {
                 webSocketBridge.listen(function(data) {
                     $(data["html"]).prependTo(".historical-alerts > tbody");
+                    $('[data-toggle="tooltip"]').tooltip();
+                    $('[data-toggle="popover"]').popover();
                 });
             });
         });
     </script>
     <script>
         $(function () {
-            $('[data-toggle="tooltip"]').tooltip()
+            $('[data-toggle="tooltip"]').tooltip();
+            $('[data-toggle="popover"]').popover();
         })
     </script>
 {% endblock %}
