@@ -16,7 +16,7 @@
             <div class="form-group">
                 <label for="alert-actions" class="control-label">Alert Actions</label>
                 {% for alert_action in object.actions.all %}
-                    <a href="{% url 'alert_action_detail' pk=alert_action.pk %}" class="form-control" aria-describedby="alert-actions-help">{{ alert_action.name }} - {{ alert_action.description }}</a>
+                    <a href="{% url 'alert_action_detail' pk=alert_action.pk %}" class="form-control" aria-describedby="alert-actions-help">{{ alert_action.name }} ({{ alert_action.task.action_type }})</a>
                 {% endfor %}
                 <p id="alert-actions-help" class="help-block">These actions will be triggered when <em>{{ object.name }}</em> is active</p>
             </div>

@@ -5,3 +5,8 @@ priorities = [
     ('Urgent', 'URGENT'),
     ('Emergency', 'EMERGENCY')
 ]
+
+action_types = [
+    ('Notification', 'NOTIFICATION'),
+    ('Logic', 'LOGIC')
+]

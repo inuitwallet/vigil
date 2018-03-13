@@ -20,6 +20,7 @@ class Command(BaseCommand):
                 logger.info('{} already exists'.format(task))
 
             task_class = getattr(tasks, task)
-            task_object.default_data = task_class.__data__
+            task_object.default_data = task_class.data
+            task_object.action_type = task_class.action_type
             task_object.save()
-            logger.info('updated default data for {}'.format(task))
+            logger.info('updated default data and action type for {}'.format(task))

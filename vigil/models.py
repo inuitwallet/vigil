@@ -5,17 +5,20 @@ from uuid import uuid4
 from django.contrib.postgres.fields import JSONField
 from django.db import models
 
-from vigil.globals import priorities
+from vigil.globals import priorities, action_types
 
 
 class ActionTask(models.Model):
     name = models.CharField(
         max_length=255
     )
-
     default_data = JSONField(
         default=dict,
         blank=True
+    )
+    action_type = models.CharField(
+        max_length=20,
+        choices=action_types
     )
 
     def __str__(self):

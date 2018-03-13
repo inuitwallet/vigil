@@ -13,7 +13,7 @@
     <td>{{ alert.priority }}</td>
     <td>{{ alert.set_active|timesince }}</td>
     {% if user.is_authenticated %}
-        <td>
+        <td class="text-center">
             <input type="checkbox" value="{{ alert.alert_id }}" name="acknowledge_alerts" style="margin: 0 auto;" />
         </td>
     {% endif %}

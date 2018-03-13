@@ -7,11 +7,13 @@ from vigil.globals import priorities
 
 
 class PushoverTask(Task):
-    __data__ = {
+    data = {
         'token': '',
         'user_token': '',
         'sound': ''
     }
+
+    action_type = 'Notification'
 
     @staticmethod
     def alter_priority(priority):
