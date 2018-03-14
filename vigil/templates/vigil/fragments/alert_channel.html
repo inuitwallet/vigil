@@ -12,6 +12,7 @@
     <td>{{ alert.message }}</td>
     <td>{{ alert.priority }}</td>
     <td>{{ alert.set_active|timesince }}</td>
+    <td>{{ alert.historicalalert_set.all.first.alert_created|timesince }} ago</td>
     {% if user.is_authenticated %}
         <td class="text-center">
             <input type="checkbox" value="{{ alert.alert_id }}" name="acknowledge_alerts" style="margin: 0 auto;" />
