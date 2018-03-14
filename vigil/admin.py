@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from vigil.models import AlertChannel, AlertAction, ActionTask
+from vigil.models import AlertChannel, AlertAction
 
 
 @admin.register(AlertChannel)

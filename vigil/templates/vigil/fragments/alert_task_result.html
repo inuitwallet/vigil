@@ -1,0 +1,18 @@
+{% load static %}
+
+<tr>
+    <td>
+        <button class="btn btn-light" data-toggle="popover" title="Task Result" data-content="{{ action_task_result.clean_result }}" data-trigger="focus" data-placement="left" data-container="body">
+            {{ action_task_result.date_done|timesince }} ago
+        </button>
+    </td>
+    <td>
+        {% if action_task_result.status == 'SUCCESS' %}
+            <img src="{% static 'vigil/img/svg/check.svg' %}" data-toggle="tooltip" data-placement="bottom" title="Task Succeeded" />
+        {% elif action_task_result.status == 'PENDING' %}
+            <img src="{% static 'vigil/img/svg/watch.svg' %}" data-toggle="tooltip" data-placement="bottom" title="Task is Pending" />
+        {% else %}
+            <img src="{% static 'vigil/img/svg/x.svg' %}" data-toggle="tooltip" data-placement="bottom" title="Task Failed" />
+        {% endif %}
+    </td>
+</tr>

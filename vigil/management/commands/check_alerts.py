@@ -2,11 +2,11 @@ import logging
 from copy import copy
 from django.core.management import BaseCommand
 from django.utils.timezone import now
+from celery import uuid
 
 import vigil.tasks as tasks
 from vigil.globals import priorities
-from vigil.models import AlertChannel
-
+from vigil.models import AlertChannel, VigilTaskResult
 
 logger = logging.getLogger(__name__)
 
@@ -50,7 +50,13 @@ class Command(BaseCommand):
                 task_data['message'] = alert_channel.message
                 task_data['priority'] = alert_channel.priority
 
-                task.delay(data=task_data)
+                task_id = uuid()
+                print(task_id)
+                task_result, _ = VigilTaskResult.objects.get_or_create(
+                    alert_action=alert_action,
+                    task_id=task_id
+                )
+                task.apply_async(kwargs={'data': task_data}, task_id=task_id)
 
                 alert_action.last_triggered = now()
                 alert_action.save()
