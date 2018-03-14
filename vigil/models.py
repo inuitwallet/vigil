@@ -159,3 +159,6 @@ class HistoricalAlert(models.Model):
 
     def __str__(self):
         return '{} - {}'.format(self.alert_created, self.title)
+
+    class Meta:
+        ordering = ['-alert_created']
