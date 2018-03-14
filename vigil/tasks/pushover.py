@@ -18,7 +18,6 @@ class PushoverTask(Task):
     @staticmethod
     def alter_priority(priority):
         priors = [p[0] for p in priorities]
-        print(priors.index(priority))
         return min(priors.index(priority) - 2, 1)
 
     def run(self, *args, **kwargs):

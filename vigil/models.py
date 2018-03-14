@@ -1,16 +1,21 @@
-import json
 from copy import copy
 from datetime import timedelta
 from uuid import uuid4
 
 from django.contrib.postgres.fields import JSONField
 from django.db import models
-from django_celery_results.models import TaskResult
 
-from vigil.globals import priorities, action_types
+from django_celery_results.models import TaskResult
+from vigil.globals import action_types, priorities
 
 
 class VigilTaskResult(TaskResult):
+    alert_channel = models.ForeignKey(
+        'AlertChannel',
+        blank=True,
+        null=True,
+        on_delete=models.CASCADE
+    )
     alert_action = models.ForeignKey(
         'AlertAction',
         on_delete=models.CASCADE
@@ -19,6 +24,9 @@ class VigilTaskResult(TaskResult):
     @property
     def clean_result(self):
         return self.result.replace('"', '')
+
+    class Meta:
+        ordering = ['-date_done']
 
 
 class ActionTask(models.Model):
@@ -175,3 +183,6 @@ class HistoricalAlert(models.Model):
 
     class Meta:
         ordering = ['-alert_created']
+
+# import the signals file
+from vigil import signals

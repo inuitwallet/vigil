@@ -41,7 +41,7 @@ thead {
     opacity: 0.5;
 }
 
-#historical-alerts-container {
+#historical-alerts-container, #alert-task-results-container {
     max-height: 500px;
     overflow-y: scroll;
 }

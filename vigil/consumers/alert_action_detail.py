@@ -2,11 +2,11 @@ import json
 from channels.generic.websocket import AsyncWebsocketConsumer
 
 
-class AlertDetailConsumer(AsyncWebsocketConsumer):
+class AlertActionDetailConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         # Join group
-        self.group_name = 'alert_detail_{}'.format(
-            self.scope['url_route']['kwargs']['alert_channel_pk']
+        self.group_name = 'alert_action_detail_{}'.format(
+            self.scope['url_route']['kwargs']['alert_action_pk']
         )
         await self.channel_layer.group_add(
             self.group_name,
@@ -22,7 +22,8 @@ class AlertDetailConsumer(AsyncWebsocketConsumer):
         )
 
     # Receive message from room group
-    async def update_historical_alerts(self, event):
+    async def update_action_task_results(self, event):
+        # Send message to WebSocket
         await self.send(text_data=json.dumps({
             'html': event['html']
         }))

@@ -2,6 +2,7 @@ from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 from django.http import JsonResponse
 from django.shortcuts import redirect, get_object_or_404
+from django.template.loader import render_to_string
 from django.utils.timezone import now
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
@@ -95,7 +96,12 @@ class AlertVigil(View):
             'alert_detail_{}'.format(alert_channel.pk),
             {
                 'type': 'update_historical_alerts',
-                'historical_alert_pk': historical_alert.pk
+                'html': render_to_string(
+                    'vigil/fragments/historical_alert.html',
+                    {
+                        'historical_alert': historical_alert,
+                    }
+                )
             }
         )
 

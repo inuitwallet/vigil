@@ -33,7 +33,7 @@
                 <table class="table table-striped table-hover alert-task-results">
                     <tbody>
                         {% for action_task_result in object.vigiltaskresult_set.all %}
-                            {% include 'vigil/fragments/alert_task_result.html' %}
+                            {% include 'vigil/fragments/action_task_result.html' %}
                         {% endfor %}
                     </tbody>
                 </table>
@@ -43,6 +43,21 @@
 {% endblock %}
 
 {% block endbodyjs %}
+    <script>
+        $(function() {
+            var alert_action_pk = {{ object.pk }};
+            const webSocketBridge = new channels.WebSocketBridge();
+            webSocketBridge.connect("/alert_action_detail/"+alert_action_pk+"/");
+
+            webSocketBridge.socket.addEventListener('open', function() {
+                webSocketBridge.listen(function(data) {
+                    $(data["html"]).prependTo(".alert-task-results > tbody");
+                    $('[data-toggle="tooltip"]').tooltip();
+                    $('[data-toggle="popover"]').popover();
+                });
+            });
+        });
+    </script>
     <script>
         $(function () {
             $('[data-toggle="tooltip"]').tooltip();

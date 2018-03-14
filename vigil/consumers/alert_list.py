@@ -28,6 +28,8 @@ class AlertListConsumer(AsyncWebsocketConsumer):
         # Send message to WebSocket
         alert_channel = await self.get_alert_channel(event['alert_id'])
 
+        # html needs to be rendered here in order to
+        # correctly determine if the viewing user is authenticated
         await self.send(text_data=json.dumps({
             'message_type': event['message_type'],
             'alert_id': event['alert_id'],

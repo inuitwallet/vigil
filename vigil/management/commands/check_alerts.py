@@ -51,8 +51,8 @@ class Command(BaseCommand):
                 task_data['priority'] = alert_channel.priority
 
                 task_id = uuid()
-                print(task_id)
                 task_result, _ = VigilTaskResult.objects.get_or_create(
+                    alert_channel=alert_channel,
                     alert_action=alert_action,
                     task_id=task_id
                 )
