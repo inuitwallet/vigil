@@ -25,6 +25,7 @@ Django==2.0.3
 django-bootstrap-form==3.3
 django-celery-beat==1.1.1
 django-celery-results==1.0.1
+django-extra-views==0.10.0
 django-storages==1.6.5
 docutils==0.14
 greenlet==0.4.13
