@@ -153,6 +153,9 @@ class AlertChannel(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        ordering = ['name']
+
     @property
     def actions(self):
         return self.alert_actions.order_by('action')
