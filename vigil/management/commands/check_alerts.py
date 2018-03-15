@@ -24,11 +24,11 @@ class Command(BaseCommand):
                     alert_channel.priority = priorities[3][0]
                     alert_channel.save()
 
-            for alert_action in alert_channel.actions.all():
+            for alert_action in alert_channel.actions:
                 logger.info(
                     'Checking {}:{}...'.format(
                         alert_channel.name,
-                        alert_action.task.name
+                        alert_action.name
                     )
                 )
 

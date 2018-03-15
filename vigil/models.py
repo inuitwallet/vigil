@@ -125,8 +125,16 @@ class AlertChannel(models.Model):
         choices=priorities,
         editable=False
     )
-    actions = models.ManyToManyField(
+    simple_actions = models.ManyToManyField(
         AlertAction,
+        blank=True,
+        help_text='Which Alert Actions are attached to this Alert Channel\n'
+                  '(highlighted entries are added. Ctrl+select to choose multiple)'
+    )
+    alert_actions = models.ManyToManyField(
+        AlertAction,
+        related_name='alert_actions',
+        through='ChannelAction',
         blank=True,
         help_text='Which Alert Actions are attached to this Alert Channel\n'
                   '(highlighted entries are added. Ctrl+select to choose multiple)'
@@ -144,6 +152,48 @@ class AlertChannel(models.Model):
 
     def __str__(self):
         return self.name
+
+    @property
+    def actions(self):
+        return self.alert_actions.order_by('action')
+
+    @property
+    def notification_actions(self):
+        return self.alert_actions.filter(
+            task__action_type='Notification'
+        ).order_by(
+            'action'
+        )
+
+    @property
+    def logic_actions(self):
+        return self.alert_actions.filter(
+            task__action_type='Logic'
+        ).order_by(
+            'action'
+        )
+
+
+class ChannelAction(models.Model):
+    alert_channel = models.ForeignKey(
+        AlertChannel,
+        related_name='channel',
+        on_delete=models.CASCADE
+    )
+    alert_action = models.ForeignKey(
+        AlertAction,
+        related_name='action',
+        on_delete=models.CASCADE
+    )
+    priority = models.IntegerField(
+        default=0
+    )
+
+    def __str__(self):
+        return '{} - {} : {}'.format(self.priority, self.alert_channel, self.alert_action)
+
+    class Meta:
+        ordering = ['alert_channel', 'priority']
 
 
 class HistoricalAlert(models.Model):

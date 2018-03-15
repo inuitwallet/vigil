@@ -1,8 +1,10 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import ListView, UpdateView, CreateView, DeleteView, DetailView
+from extra_views import UpdateWithInlinesView, InlineFormSet, NamedFormsetsMixin
 
-from vigil.models import AlertChannel, AlertAction
+from vigil.models import AlertChannel, AlertAction, ChannelAction
+
 
 # Alert Channels
 
@@ -25,10 +27,19 @@ class AlertChannelDetailView(LoginRequiredMixin, DetailView):
     model = AlertChannel
 
 
-class AlertChannelUpdateView(LoginRequiredMixin, UpdateView):
+class ChannelActionInline(InlineFormSet):
+    model = ChannelAction
+    fields = ['alert_action', 'priority']
+    extra = 2
+    max_num = 10
+
+
+class AlertChannelUpdateView(LoginRequiredMixin, NamedFormsetsMixin, UpdateWithInlinesView):  # noqa
     model = AlertChannel
     template_name_suffix = '_update_form'
-    fields = ['name', 'actions', 'repeat_time', 'time_to_urgent']
+    fields = ['name', 'repeat_time', 'time_to_urgent']
+    inlines = [ChannelActionInline]
+    inlines_names = ['channel_actions']
 
     def get_success_url(self):
         return reverse_lazy('alert_detail', kwargs={'pk': self.object.pk})
@@ -37,7 +48,7 @@ class AlertChannelUpdateView(LoginRequiredMixin, UpdateView):
 class AlertChannelCreateView(LoginRequiredMixin, CreateView):
     model = AlertChannel
     template_name_suffix = '_create_form'
-    fields = ['name', 'actions', 'repeat_time', 'time_to_urgent']
+    fields = ['name', 'alert_actions', 'repeat_time', 'time_to_urgent']
 
     def get_success_url(self):
         return reverse_lazy('alert_detail', kwargs={'pk': self.object.pk})

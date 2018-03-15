@@ -14,8 +14,6 @@ def update_alert_action_result_list(sender=None, headers=None, body=None, **kwar
     except VigilTaskResult.DoesNotExist:
         return
 
-    print(action_task_result.alert_action_id)
-
     channel_layer = get_channel_layer()
     async_to_sync(channel_layer.group_send)(
         'alert_action_detail_{}'.format(action_task_result.alert_action_id),
