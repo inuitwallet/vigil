@@ -72,16 +72,18 @@ class AlertChannel(models.Model):
         ordering = ['name']
 
     def save(self, *args, **kwargs):
+        if not self.id:
+            super().save(*args, **kwargs)
+
         keys = []
 
         if self.preprocessor_action:
             for key in self.preprocessor_action.expected_data.keys():
                 keys.append(key)
 
-        if self.logic_actions:
-            for logic_action in self.logic_actions.all():
-                for key in logic_action.expected_data.keys():
-                    keys.append(key)
+        for logic_action in self.logic_actions.all():
+            for key in logic_action.expected_data.keys():
+                keys.append(key)
 
         expected_data = {}
 
