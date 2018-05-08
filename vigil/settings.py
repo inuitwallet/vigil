@@ -27,7 +27,7 @@ SECRET_KEY = '-*!awr*dk=v=$3+hi71*xvr1j36gv6(3#m+#rz)8-p@f+w3m^a'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -141,6 +141,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 LOGGING = {
     'version': 1,
