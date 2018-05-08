@@ -7,13 +7,19 @@
 {% endblock %}
 
 {% block content %}
+    {% include 'vigil/fragments/messages.html' %}
     <form action="" method="post" class="form-horizontal">
-            <legend>Update the "{{ object.name }}" Alert Action</legend>
+            <legend>Update the "{{ object.name }}" Logic Alert Action</legend>
             {% csrf_token %}
+            {{ form.media }}
             {{ form|bootstrap_horizontal }}
             <div class="form-group">
                 <button type="submit" class="btn btn-dark">Save</button>
-                <a href="{% url 'alert_action_detail' pk=object.pk %}" role="button" class="btn btn-secondary">Back</a>
+                <a href="{% url 'logic_alert_action_detail' pk=object.pk %}" role="button" class="btn btn-secondary">Back</a>
             </div>
         </form>
+{% endblock %}
+
+{% block endbodyjs %}
+    <script type="text/javascript" src="/~mnb2/a3/admin/jsi18n/"></script>
 {% endblock %}

@@ -1,0 +1,14 @@
+<tr>
+    <td>
+        {% if user.is_authenticated %}
+            <a href="{% url 'preprocessor_alert_action_detail' pk=alert_action.id %}?back={{ request.path|urlencode }}">
+        {% endif %}
+            {{ alert_action.name }}
+        {% if user.is_authenticated %}
+            </a>
+        {% endif %}
+    </td>
+    <td>{{ alert_action.description|default_if_none:"" }}</td>
+    <td>{{ alert_action.last_triggered|default_if_none:"Never Triggered" }}</td>
+    <td>{{ alert_action.task|default_if_none:"No Associated Task" }}</td>
+</tr>

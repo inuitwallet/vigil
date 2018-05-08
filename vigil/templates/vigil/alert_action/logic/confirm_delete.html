@@ -9,8 +9,8 @@
 {% block content %}
     <form action="" method="post">
         {% csrf_token %}
-        <legend>Are you sure you want to delete the "{{ object.name }}" Alert Action?</legend>
+        <legend>Are you sure you want to delete the "{{ object.name }}" Logic Alert Action?</legend>
         <button class="btn btn-dark" type="submit" value="Confirm">Confirm</button>
-        <a class="btn btn-secondary" role="button" href="{% url 'alert_action_detail' pk=object.pk %}">Back</a>
+        <a class="btn btn-secondary" role="button" href="{% url 'logic_alert_action_detail' pk=object.pk %}">Back</a>
     </form>
 {% endblock %}

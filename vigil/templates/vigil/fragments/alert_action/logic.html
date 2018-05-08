@@ -1,7 +1,7 @@
 <tr>
     <td>
         {% if user.is_authenticated %}
-            <a href="{% url 'alert_action_detail' pk=alert_action.id %}">
+            <a href="{% url 'logic_alert_action_detail' pk=alert_action.id %}?back={{ request.path|urlencode }}">
         {% endif %}
             {{ alert_action.name }}
         {% if user.is_authenticated %}

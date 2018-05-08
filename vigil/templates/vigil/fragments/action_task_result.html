@@ -2,7 +2,7 @@
 
 <tr>
     <td>
-        <button class="btn btn-light" data-toggle="popover" title="{{ action_task_result.alert_channel.name|default_if_none:"Task Result" }} Result" data-content="{{ action_task_result.clean_result }}" data-trigger="focus" data-placement="left" data-container="body">
+        <button class="btn btn-light" data-toggle="popover" title="{{ action_task_result.alert_channel.name|default_if_none:"Task Result" }} Result" data-content="{{ action_task_result.clean_result }}" data-trigger="focus" data-placement="top" data-container="body">
             {{ action_task_result.date_done|timesince }} ago
         </button>
     </td>

@@ -11,6 +11,6 @@
             {% csrf_token %}
             <legend>Are you sure you want to delete the "{{ object.name }}" Alert Channel?</legend>
             <button class="btn btn-outline-danger" type="submit" value="Confirm">Confirm</button>
-            <a class="btn btn-secondary" role="button" href="{% url 'alert_detail' pk=object.pk %}">Back</a>
+            <a class="btn btn-secondary" role="button" href="{% url 'alert_channel_detail' pk=object.pk %}">Back</a>
         </form>
 {% endblock %}

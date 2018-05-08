@@ -3,16 +3,18 @@
 {% load bootstrap %}
 
 {% block title %}
-    Create Alert Action
+    Edit {{ object.name }} Action
 {% endblock %}
 
 {% block content %}
+    {% include 'vigil/fragments/messages.html' %}
     <form action="" method="post" class="form-horizontal">
-            <legend>Create a new Alert Action</legend>
+            <legend>Update the "{{ object.name }}" Pre-processor Alert Action</legend>
             {% csrf_token %}
             {{ form|bootstrap_horizontal }}
             <div class="form-group">
                 <button type="submit" class="btn btn-dark">Save</button>
+                <a href="{% url 'preprocessor_alert_action_detail' pk=object.pk %}" role="button" class="btn btn-secondary">Back</a>
             </div>
         </form>
 {% endblock %}

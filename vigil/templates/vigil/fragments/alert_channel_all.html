@@ -1,17 +1,18 @@
 {% load static %}
 
-<tr id="{{ alert.alert_id }}">
+<tr id="{{ alert_channel.alert_id }}">
     <td>
         {% if user.is_authenticated %}
-            <a href="{% url 'alert_detail' pk=alert.id %}">
+            <a href="{% url 'alert_channel_detail' pk=alert_channel.id %}">
         {% endif %}
-            {{ alert.name }}
+            {{ alert_channel.name }}
         {% if user.is_authenticated %}
             </a>
         {% endif %}
     </td>
-    <td>{% if alert.active %}<img src="{% static 'vigil/img/svg/check.svg' %}" />{% endif %}</td>
-    <td>{{ alert.repeat_time }}</td>
-    <td>{{ alert.time_to_urgent }}</td>
+    <td scope="col">{{ alert_channel.alert_id }}</td>
+    <td scope="col">{{ alert_channel.expected_data }}</td>
+    <td scope="col">{{ alert_channel.preprocessor_action }}</td>
+    <td scope="col">{{ alert_channel.active_alerts.count }}</td>
 </tr>
 

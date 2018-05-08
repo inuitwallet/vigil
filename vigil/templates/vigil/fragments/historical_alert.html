@@ -1,16 +1,16 @@
 {% load static %}
 
 <tr>
-    <td>
-        <button class="btn btn-light" data-toggle="popover" title="{{ historical_alert.title }}" data-content="{{ historical_alert.message }}" data-trigger="focus" data-placement="left" data-container="body">
-            {{ historical_alert.alert_created|timesince }} ago
+    <td class="text-left">
+        <button class="btn btn-light" data-toggle="popover" title="Updated {{ historical_alert.last_updated|timesince }} ago" data-content="{{ historical_alert.message }}" data-trigger="focus" data-placement="left" data-container="body">
+            {{ historical_alert.title }}
         </button>
     </td>
     <td>
-        {% if historical_alert.updated %}
-            <img src="{% static 'vigil/img/svg/issue-reopened.svg' %}" data-toggle="tooltip" data-placement="bottom" title="Alert was already open" />
+        {% if historical_alert.active %}
+            <img src="{% static 'vigil/img/svg/alert.svg' %}" data-toggle="tooltip" data-placement="bottom" title="Alert is currently active" />
         {% else %}
-            <img src="{% static 'vigil/img/svg/issue-opened.svg' %}" data-toggle="tooltip" data-placement="bottom" title="Alert was newly opened" />
+            <img src="{% static 'vigil/img/svg/circle-slash.svg' %}" data-toggle="tooltip" data-placement="bottom" title="Alert has been acknowledged" />
         {% endif %}
     </td>
 </tr>

@@ -1,14 +1,24 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
 {% block title %}
 Alert Actions
 {% endblock %}
 
 {% block content %}
     <div class="row">
+        <div class="col">
+            <h2>Logic Actions</h2>
+        </div>
+        <div class="col text-right">
+            <a class="btn btn-dark" href="{% url 'logic_alert_action_create' %}">New</a>
+        </div>
+    </div>
+    <div class="row">
         <div class="col"></div>
-            <table class="table table-striped table-hover table-bordered active-alerts">
-                <caption>List of available Alert Actions</caption>
+            <table id="logic-actions" class="table table-striped table-hover table-bordered active-alerts">
+                <caption>List of available Logic Alert Actions</caption>
                 <thead class="thead-dark bg-dark">
                     <tr>
                         <td scope="col">Name</td>
@@ -19,10 +29,18 @@ Alert Actions
                 </thead>
                 <tbody>
                     {% for alert_action in object_list %}
-                        {% include 'vigil/fragments/alert_action.html' %}
+                        {% include 'vigil/fragments/alert_action/logic.html' %}
                     {% endfor %}
                 </tbody>
             </table>
         </div>
     </div>
+{% endblock %}
+
+{% block endbodyjs %}
+    <script>
+        $(document).ready(function() {
+            $('#logic-actions').DataTable();
+        } );
+    </script>
 {% endblock %}

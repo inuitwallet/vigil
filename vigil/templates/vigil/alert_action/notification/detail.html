@@ -5,9 +5,10 @@
 {% endblock %}
 
 {% block content %}
+    {% include 'vigil/fragments/messages.html' %}
     <div class="row">
         <div class="col-8">
-            <h1>The "{{ object.name }}" Alert Action</h1>
+            <h1>The "{{ object.name }}" Notification Alert Action</h1>
             <div class="form-group">
                 <label for="description" class="control-label">Description</label>
                 <textarea id="description" class="form-control" readonly>{{ object.description }}</textarea>
@@ -18,21 +19,24 @@
             </div>
             <div class="form-group">
                 <label for="task" class="control-label">Associated Task</label>
-                <input id="task" class="form-control" type="text" readonly value="{{ object.task }} ({{ object.task.action_type }})" />
+                <input id="task" class="form-control" type="text" readonly value="{{ object.task }}" />
             </div>
             <div class="form-group">
                 <label for="data" class="control-label">Task Data</label>
                 <textarea id="data" class="form-control" readonly>{{ object.data }}</textarea>
             </div>
-            <a href="{% url 'alert_action_update' pk=object.pk %}" role="button" class="btn btn-dark">Edit</a>
-            <a href="{% url 'alert_action_delete' pk=object.pk %}" role="button" class="btn btn-outline-danger">Delete</a>
+            <a href="{% url 'notification_alert_action_update' pk=object.pk %}" role="button" class="btn btn-dark">Edit</a>
+            {% if request.GET.back %}
+                <a href="{{ request.GET.back }}" role="button" class="btn btn-secondary">Back</a>
+            {% endif %}
+            <a href="{% url 'notification_alert_action_delete' pk=object.pk %}" role="button" class="btn btn-outline-danger">Delete</a>
         </div>
         <div class="col text-center">
             <h3>Task Results</h3>
             <div id="alert-task-results-container">
                 <table class="table table-striped table-hover alert-task-results">
                     <tbody>
-                        {% for action_task_result in object.vigiltaskresult_set.all %}
+                        {% for action_task_result in object.task_results.all %}
                             {% include 'vigil/fragments/action_task_result.html' %}
                         {% endfor %}
                     </tbody>
@@ -47,10 +51,11 @@
         $(function() {
             var alert_action_pk = {{ object.pk }};
             const webSocketBridge = new channels.WebSocketBridge();
-            webSocketBridge.connect("/alert_action_detail/"+alert_action_pk+"/");
+            webSocketBridge.connect("/notification_alert_action_detail/"+alert_action_pk+"/");
 
             webSocketBridge.socket.addEventListener('open', function() {
                 webSocketBridge.listen(function(data) {
+                    console.log(data);
                     $(data["html"]).prependTo(".alert-task-results > tbody");
                     $('[data-toggle="tooltip"]').tooltip();
                     $('[data-toggle="popover"]').popover();
