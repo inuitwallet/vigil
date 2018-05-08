@@ -3,6 +3,8 @@ from uuid import uuid4
 
 from django.db import models
 from django.contrib.postgres.fields import JSONField
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.utils.timezone import now
 
 from vigil.globals import priorities, bootstrap_priorities
@@ -71,28 +73,30 @@ class AlertChannel(models.Model):
     class Meta:
         ordering = ['name']
 
-    def save(self, *args, **kwargs):
-        keys = []
-
-        if self.preprocessor_action:
-            for key in self.preprocessor_action.expected_data.keys():
-                keys.append(key)
-
-        for logic_action in self.logic_actions.all():
-            for key in logic_action.expected_data.keys():
-                keys.append(key)
-
-        expected_data = {}
-
-        for key in set(keys):
-            expected_data[key] = ''
-
-        self.expected_data = expected_data
-        super().save(*args, **kwargs)
-
     @property
     def active_alerts(self):
         return self.alert_set.filter(active=True)
+
+
+@receiver(post_save, sender=AlertChannel)
+def post_save(sender, instance, **kwargs):
+    keys = []
+
+    if instance.preprocessor_action:
+        for key in instance.preprocessor_action.expected_data.keys():
+            keys.append(key)
+
+    for logic_action in instance.logic_actions.all():
+        for key in logic_action.expected_data.keys():
+            keys.append(key)
+
+    expected_data = {}
+
+    for key in set(keys):
+        expected_data[key] = ''
+
+    instance.expected_data = expected_data
+    instance.save()
 
 
 class Alert(models.Model):
