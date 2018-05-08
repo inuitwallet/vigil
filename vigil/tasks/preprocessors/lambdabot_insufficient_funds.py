@@ -41,8 +41,8 @@ class LambdaBotInsufficientFundsTask(Task):
             'title': 'Refill {} on {} {}'.format(data['currency'], data['exchange'], data['pair']),
             'message': (
                 'There are not enough {} to place orders on the {} {} pair.\n'
-                'Require {} to reach the target of {} but there are only {} available.\n'
-                'There are currently {} on order.'.format(
+                'Require {:.4f} to reach the target of {:.4f} but there are only {:.4f} available.\n'
+                'There are currently {:.4f} on order.'.format(
                     data['currency'],
                     data['exchange'],
                     data['pair'],
