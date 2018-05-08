@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+from django.contrib import messages
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -57,7 +59,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'vigil.urls'
 
-LOGIN_REDIRECT_URL = 'alert_list'
+LOGIN_REDIRECT_URL = 'active_alert_channel_list'
 LOGIN_URL = 'login'
 
 TEMPLATES = [
@@ -138,7 +140,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-#STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 
 LOGGING = {
     'version': 1,
@@ -166,6 +168,10 @@ LOGGING = {
 # Celery
 CELERY_RESULT_BACKEND = 'django-db'
 
+MESSAGE_TAGS = {
+    messages.SUCCESS: 'dark',
+    messages.ERROR: 'danger'
+}
 
 # Load local_settings
 try:
