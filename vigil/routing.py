@@ -14,8 +14,16 @@ websocket_urlpatterns = [
         consumers.AlertDetailConsumer
     ),
     url(
-        r'^alert_action_detail/(?P<alert_action_pk>[^/]+)/$',
-        consumers.AlertActionDetailConsumer
+        r'^preprocessor_alert_action_detail/(?P<alert_action_pk>[^/]+)/$',
+        consumers.PreProcessorAlertActionDetailConsumer
+    ),
+    url(
+        r'^notification_alert_action_detail/(?P<alert_action_pk>[^/]+)/$',
+        consumers.NotificationAlertActionDetailConsumer
+    ),
+    url(
+        r'^logic_alert_action_detail/(?P<alert_action_pk>[^/]+)/$',
+        consumers.LogicAlertActionDetailConsumer
     ),
 ]
 
