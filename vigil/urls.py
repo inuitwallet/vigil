@@ -24,7 +24,9 @@ urlpatterns = [
     path('login/', auth_views.login, name='login'),
     path('logout/', auth_views.logout, {'next_page': '/'}, name='logout'),
 
+    ######
     # Alerts API
+
     path(
         'alert/<uuid:alert_channel_uuid>',
         views.AlertVigil.as_view(),
@@ -36,69 +38,123 @@ urlpatterns = [
         name='acknowledge'
     ),
 
+    ######
     # Alerts UI
-    # Show
+
+    # Alert Channels
+
     path(
         '',
         views.ShowActiveAlertsView.as_view(),
-        name='alert_list'
+        name='active_alert_channel_list'
     ),
     path(
         'all_alerts',
         views.ShowAllAlertsView.as_view(),
-        name='all_alert_list'
+        name='all_alert_channel_list'
     ),
-    path(
-        'alert_actions',
-        views.ShowAllAlertActionsView.as_view(),
-        name='all_alert_actions_list'
-    ),
-
-    # Detail
     path(
         'alert/<int:pk>',
         views.AlertChannelDetailView.as_view(),
-        name='alert_detail'
+        name='alert_channel_detail'
     ),
-    path(
-        'alert_action/<int:pk>',
-        views.AlertActionDetailView.as_view(),
-        name='alert_action_detail'
-    ),
-
-    # Create
     path(
         'alert/create',
         views.AlertChannelCreateView.as_view(),
-        name='alert_create'
+        name='alert_channel_create'
     ),
-    path(
-        'alert_action/create',
-        views.AlertActionCreateView.as_view(),
-        name='alert_action_create'
-    ),
-
-    # Edit
     path(
         'alert/<int:pk>/edit',
         views.AlertChannelUpdateView.as_view(),
-        name='alert_update'
+        name='alert_channel_update'
     ),
-    path(
-        'alert_action/<int:pk>/edit',
-        views.AlertActionUpdateView.as_view(),
-        name='alert_action_update'
-    ),
-
-    # Delete
     path(
         'alert/<int:pk>/delete',
         views.AlertChannelDeleteView.as_view(),
-        name='alert_delete'
+        name='alert_channel_delete'
+    ),
+
+    # Preprocessor Alert Actions
+
+    path(
+        'preprocessor_alert_actions',
+        views.ShowPreProcessorAlertActionsView.as_view(),
+        name='preprocessor_alert_actions_list'
     ),
     path(
-        'alert_action/<int:pk>/delete',
-        views.AlertActionDeleteView.as_view(),
-        name='alert_action_delete'
-    )
+        'preprocessor_alert_action/<int:pk>',
+        views.PreProcessorAlertActionDetailView.as_view(),
+        name='preprocessor_alert_action_detail'
+    ),
+    path(
+        'preprocessor_alert_action/create',
+        views.PreProcessorAlertActionCreateView.as_view(),
+        name='preprocessor_alert_action_create'
+    ),
+    path(
+        'preprocessor_alert_action/<int:pk>/edit',
+        views.PreProcessorAlertActionUpdateView.as_view(),
+        name='preprocessor_alert_action_update'
+    ),
+    path(
+        'preprocessor_alert_action/<int:pk>/delete',
+        views.PreProcessorAlertActionDeleteView.as_view(),
+        name='preprocessor_alert_action_delete'
+    ),
+
+    # Logic Alert Actions
+
+    path(
+        'logic_alert_actions',
+        views.ShowLogicAlertActionsView.as_view(),
+        name='logic_alert_actions_list'
+    ),
+    path(
+        'logic_alert_action/<int:pk>',
+        views.LogicAlertActionDetailView.as_view(),
+        name='logic_alert_action_detail'
+    ),
+    path(
+        'logic_alert_action/create',
+        views.LogicAlertActionCreateView.as_view(),
+        name='logic_alert_action_create'
+    ),
+    path(
+        'logic_alert_action/<int:pk>/edit',
+        views.LogicAlertActionUpdateView.as_view(),
+        name='logic_alert_action_update'
+    ),
+    path(
+        'logic_alert_action/<int:pk>/delete',
+        views.LogicAlertActionDeleteView.as_view(),
+        name='logic_alert_action_delete'
+    ),
+
+    # Notification Alert Actions
+
+    path(
+        'notification_alert_actions',
+        views.ShowNotificationAlertActionsView.as_view(),
+        name='notification_alert_actions_list'
+    ),
+    path(
+        'notification_alert_action/<int:pk>',
+        views.NotificationAlertActionDetailView.as_view(),
+        name='notification_alert_action_detail'
+    ),
+    path(
+        'notification_alert_action/create',
+        views.NotificationAlertActionCreateView.as_view(),
+        name='notification_alert_action_create'
+    ),
+    path(
+        'notification_alert_action/<int:pk>/edit',
+        views.NotificationAlertActionUpdateView.as_view(),
+        name='notification_alert_action_update'
+    ),
+    path(
+        'notification_alert_action/<int:pk>/delete',
+        views.NotificationAlertActionDeleteView.as_view(),
+        name='notification_alert_action_delete'
+    ),
 ]
