@@ -1,5 +1,3 @@
-import logging
-
 from asgiref.sync import async_to_sync
 from celery import signature, group, uuid
 from channels.layers import get_channel_layer
@@ -10,7 +8,6 @@ from vigil.globals import priorities
 from vigil.models import AlertChannel, VigilTaskResult
 from vigil.celery import app
 
-logger = logging.getLogger(__name__)
 
 
 @app.task
@@ -86,9 +83,6 @@ def upgrade_priority():
                         if chosen_index > (len(priorities) - 1):
                             continue
 
-                        print(chosen_index)
-                        print(priorities[chosen_index][0])
-
                         alert.priority = priorities[chosen_index][0]
                         alert.save()
 
@@ -114,7 +108,7 @@ def send_notifications():
             if alert.last_notification:
                 # if the gap between now and the last notification time is less than the repeat period, we skip
                 if (now() - alert.last_notification) < alert_channel.repeat_time:
-                    logger.warning(
+                    print(
                         'Skipping notifications for {}. '
                         'Repeat time not elapsed for {}'.format(
                             alert,
