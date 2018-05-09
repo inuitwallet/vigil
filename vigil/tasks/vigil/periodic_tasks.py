@@ -1,11 +1,13 @@
 import logging
 
 from asgiref.sync import async_to_sync
+from celery import signature, group, uuid
 from channels.layers import get_channel_layer
 from django.utils.timezone import now
 
+from vigil import tasks
 from vigil.globals import priorities
-from vigil.models import AlertChannel
+from vigil.models import AlertChannel, VigilTaskResult
 from vigil.celery import app
 
 logger = logging.getLogger(__name__)
@@ -109,23 +111,22 @@ def send_notifications():
         notifications = alert_channel.notification_actions.all()
 
         for alert in alert_channel.active_alerts:
+            if alert.last_notification:
+                # if the gap between now and the last notification time is less than the repeat period, we skip
+                if (now() - alert.last_notification) < alert_channel.repeat_time:
+                    logger.warning(
+                        'Skipping notifications for {}. '
+                        'Repeat time not elapsed for {}'.format(
+                            alert,
+                            (alert.last_notification + alert_channel.repeat_time) - now()
+                        )
+                    )
+                    continue
+
             # we have the message details so we can trigger the notification tasks
             notification_list = []
 
             for notification_action in notifications:
-
-                if alert.last_notification:
-                    # if the gap between now and the last notification time is less than the repeat period, we skip
-                    if (now() - alert.last_notification) < alert_channel.repeat_time:
-                        logger.warning(
-                            'Skipping notification "{}". '
-                            'Repeat time not elapsed for {}'.format(
-                                notification_action,
-                                (alert.last_notification + alert_channel.repeat_time) - now()
-                            )
-                        )
-                        continue
-
                 notification_task = getattr(tasks, notification_action.task.name)
                 task_id = uuid()
                 VigilTaskResult.objects.create(
