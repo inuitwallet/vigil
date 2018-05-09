@@ -9,7 +9,6 @@ from django.template.loader import render_to_string
 from django.utils.timezone import now
 
 from vigil.models import VigilTaskResult, Alert
-from vigil.utils import queue_notifications
 
 logger = logging.getLogger(__name__)
 
@@ -56,11 +55,7 @@ def postrun_handler(sender=None, headers=None, body=None, **kwargs):
             alert_details = json.loads(task_result.result)
             # create the alert object and update the Alert Channel History and Active Alerts list
             # this returns the alert object
-            alert = update_preprocessor_tasks(alert_details, task_result.alert_channel, channel_layer)
-            # get the required notifications
-            notifications = task_result.alert_channel.notification_actions.all()
-            # then queue and execute them in parallel
-            queue_notifications(notifications, task_result.alert_channel, alert)
+            update_preprocessor_tasks(alert_details, task_result.alert_channel, channel_layer)
 
         if action_type == 'logic':
             pass
@@ -121,8 +116,3 @@ def update_preprocessor_tasks(alert_details, alert_channel, channel_layer):
             )
         }
     )
-
-    return alert
-
-
-
