@@ -5,6 +5,7 @@ from django.utils.timezone import now
 from vigil.globals import priorities
 from vigil.models import AlertChannel
 from vigil.celery import app
+from vigil.signals import queue_notifications
 
 
 @app.task
@@ -92,3 +93,18 @@ def upgrade_priority():
                     index += 1
 
     return 'Upgraded Priority: {}'.format(upgraded_alerts)
+
+
+@app.task
+def send_notifications():
+    """
+    for each active alert. determine if notifications should be sent
+    :return:
+    """
+    for alert_channel in AlertChannel.objects.all():
+        # get the required notifications
+        notifications = alert_channel.notification_actions.all()
+
+        for alert in alert_channel.active_alerts:
+            # then queue and execute them in parallel
+            queue_notifications(notifications, alert_channel, alert)

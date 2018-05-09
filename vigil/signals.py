@@ -134,7 +134,8 @@ def queue_notifications(notifications, alert_channel, alert):
     for notification_action in notifications:
 
         if alert.last_notification:
-            if alert.last_notification >= (now() - alert_channel.repeat_time):
+            # if the gap between now and the last notification time is less than the repeat period, we skip
+            if (now() - alert.last_notification) < alert_channel.repeat_time:
                 logger.warning(
                     'Skipping notification "{}". '
                     'Repeat time not elapsed for {}'.format(
