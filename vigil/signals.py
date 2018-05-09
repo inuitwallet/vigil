@@ -132,14 +132,14 @@ def queue_notifications(notifications, alert_channel, alert):
     notification_list = []
 
     for notification_action in notifications:
-        # check the last successful send of this notification and drop it if it was within the moving 'repeat' window
+
         if alert.last_notification:
             if alert.last_notification >= (now() - alert_channel.repeat_time):
                 logger.warning(
                     'Skipping notification "{}". '
                     'Repeat time not elapsed for {}'.format(
                         notification_action,
-                        (notification_action.last_success + alert_channel.repeat_time) - now()
+                        (alert.last_notification + alert_channel.repeat_time) - now()
                     )
                 )
                 continue

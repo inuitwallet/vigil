@@ -39,7 +39,8 @@ def auto_acknowledge():
 
     for alert_channel in AlertChannel.objects.all():
         for alert in alert_channel.active_alerts:
-            if alert.last_updated + alert_channel.auto_acknowledge <= now():
+            # if the period between the last update and now is bigger than the auto-acknowledge period
+            if (now() - alert.last_updated) >= alert_channel.auto_acknowledge:
                 alert.active = False
                 alert.save()
 
@@ -68,7 +69,8 @@ def upgrade_priority():
 
     for alert_channel in AlertChannel.objects.all():
         for alert in alert_channel.active_alerts:
-            if (now() - alert.last_updated) > alert_channel.time_to_upgrade:
+            # if the period between the last priority upgrade and now is greater than the time_to_uipgrade
+            if (now() - alert.last_priority_change) > alert_channel.time_to_upgrade:
                 index = 0
 
                 for priority in priorities:
