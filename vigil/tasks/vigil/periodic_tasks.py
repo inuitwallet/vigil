@@ -5,7 +5,7 @@ from django.utils.timezone import now
 from vigil.globals import priorities
 from vigil.models import AlertChannel
 from vigil.celery import app
-from vigil.signals import queue_notifications
+from vigil.utils import queue_notifications
 
 
 @app.task
