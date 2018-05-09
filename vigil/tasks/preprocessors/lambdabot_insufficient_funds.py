@@ -47,9 +47,9 @@ class LambdaBotInsufficientFundsTask(Task):
                     data['exchange'],
                     data['pair'],
                     float(data['target_amount']) - float(data['amount_available']),
-                    data['target_amount'],
-                    data['amount_available'],
-                    data['amount_on_order']
+                    float(data['target_amount']),
+                    float(data['amount_available']),
+                    float(data['amount_on_order'])
                 )
             )
         }
