@@ -1,12 +1,12 @@
 {% load static %}
 
 <tr>
-    <td class="text-left">
+    <td scope="col" class="text-left">
         <button class="btn btn-light historical-alert-title" data-toggle="popover" title="Updated {{ historical_alert.last_updated|timesince }} ago" data-content="{{ historical_alert.message }}" data-trigger="focus" data-placement="left" data-container="body">
             {{ historical_alert.title }}
         </button>
     </td>
-    <td>
+    <td scope="col">
         {% if historical_alert.active %}
             <img src="{% static 'vigil/img/svg/alert.svg' %}" data-toggle="tooltip" data-placement="bottom" title="Alert is currently active" />
         {% else %}
