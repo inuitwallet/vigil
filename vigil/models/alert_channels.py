@@ -157,9 +157,13 @@ class Alert(models.Model):
     def bootstrap_priority(self):
         index = 0
 
-        for priority in priorities:
-            if priority[0] == self.priority:
-                break
-            index += 1
+        if self.priority:
+            for priority in priorities:
+                if priority[0] == self.priority:
+                    break
+                index += 1
+
+        if index > (len(bootstrap_priorities) - 1):
+            index = len(bootstrap_priorities) - 1
 
         return bootstrap_priorities[index]

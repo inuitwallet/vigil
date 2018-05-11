@@ -7,11 +7,11 @@ priorities = [
 ]
 
 bootstrap_priorities = [
-    'table-default',
-    'table-success',
-    'table-info',
-    'table-warning',
-    'table-danger'
+    'text-default',
+    'text-success',
+    'text-info',
+    'text-warning',
+    'text-danger'
 ]
 
 action_types = [

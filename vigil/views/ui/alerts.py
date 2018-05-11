@@ -1,3 +1,10 @@
+from math import ceil
+
+from django.core.paginator import Paginator
+from django.db.models import Q
+from django.http import JsonResponse
+from django.template import Template, Context
+from django.views import View
 from django.views.generic import ListView
 
 from vigil.models import Alert, AlertChannel
@@ -14,6 +21,97 @@ class AlertListView(ListView):
             alert_channel = None
 
         return {
-            'object_list': Alert.objects.filter(alert_channel=alert_channel),
             'alert_channel': alert_channel
         }
+
+
+class AlertDataTablesView(View):
+    def get(self, request, pk):
+        # get the basic parameters
+        draw = int(request.GET.get('draw', 0))
+        start = int(request.GET.get('start', 0))
+        length = int(request.GET.get('length', 0))
+
+        # handle a search term
+        search = request.GET.get('search[value]', '')
+        query_set = Alert.objects.filter(alert_channel__pk=pk)
+
+        if search:
+            # start with a blank Q object and add a query for every non-relational field attached to the model
+            q_objects = Q()
+
+            for field in Alert._meta.fields:
+                if field.is_relation:
+                    continue
+                kwargs = {'{}__icontains'.format(field.name): search}
+                q_objects |= Q(**kwargs)
+
+            query_set = query_set.filter(q_objects)
+
+        # handle the ordering
+        order_column_index = request.GET.get('order[0][column]')
+        order_by = request.GET.get('columns[{}][name]'.format(order_column_index))
+        order_direction = request.GET.get('order[0][dir]')
+        print(order_direction)
+        if order_direction == 'desc':
+            order_by = '-{}'.format(order_by)
+
+        if order_by:
+            query_set = query_set.order_by(order_by)
+
+        # now we have our completed queryset. we can paginate it
+        index = start + 1  # start is 0 based, pages are 1 based
+        page = Paginator(
+            query_set,
+            length
+        ).get_page(
+            ceil(index/length)
+        )
+
+        return JsonResponse(
+            {
+                'draw': draw,
+                'recordsTotal': query_set.count(),
+                'recordsFiltered': query_set.count(),
+                'data': [
+                    [
+                        Template(
+                            '{{ alert.alert_created }}'
+                        ).render(
+                            Context({'alert': alert})
+                        ),
+                        alert.title,
+                        alert.message,
+                        Template(
+                            '<p class="{{ alert.bootstrap_priority}}">{{ alert.priority }}</p>'
+                        ).render(
+                            Context({'alert': alert})
+                        ),
+                        Template(
+                            '{% load static %}'
+                            '<td scope="col">'
+                            '  {% if alert.active %}'
+                            '    <img src="{% static \'vigil/img/svg/alert.svg\' %}" '
+                            '    data-toggle="tooltip" data-placement="bottom" title="Alert is currently active" />'
+                            '  {% else %}'
+                            '    <img src="{% static \'vigil/img/svg/circle-slash.svg\' %}" '
+                            '    data-toggle="tooltip" data-placement="bottom" title="Alert has been acknowledged" />'
+                            '  {% endif %}'
+                            '</td>'
+                        ).render(
+                            Context({'alert': alert})
+                        ),
+                        Template(
+                            '{{ alert.last_updated }}'
+                        ).render(
+                            Context({'alert': alert})
+                        ),
+                        Template(
+                            '{{ alert.last_notification }}'
+                        ).render(
+                            Context({'alert': alert})
+                        ),
+                    ] for alert in page
+                ]
+            }
+        )

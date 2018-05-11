@@ -1,6 +1,7 @@
 {% load static %}
 
 <tr>
+    <td scope="col">{{ historical_alert.alert_created }}</td>
     <td scope="col">{{ historical_alert.title }}</td>
     <td scope="col">{{ historical_alert.message }}</td>
     <td scope="col" class="{{ historical_alert.bootstrap_priority }}">{{ historical_alert.priority }}</td>
@@ -11,7 +12,6 @@
             <img src="{% static 'vigil/img/svg/circle-slash.svg' %}" data-toggle="tooltip" data-placement="bottom" title="Alert has been acknowledged" />
         {% endif %}
     </td>
-    <td scope="col">{{ historical_alert.alert_created }}</td>
     <td scope="col">{{ historical_alert.last_updated }}</td>
     <td scope="col">{{ historical_alert.last_notification }}</td>
 </tr>
