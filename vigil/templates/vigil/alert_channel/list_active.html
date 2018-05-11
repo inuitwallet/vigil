@@ -76,10 +76,11 @@ Active Alert Channels
     </script>
     <script>
         $(document).ready(function() {
-            $('#active-alerts').DataTable({
-                "paging": false,
-                "searching": false
-            });
+            $('#active-alerts').DataTable(
+                {
+                    "pagingType": "full"
+                }
+            );
         } );
     </script>
 {% endblock %}
