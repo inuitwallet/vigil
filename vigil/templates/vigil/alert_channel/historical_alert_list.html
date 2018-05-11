@@ -16,19 +16,19 @@
                 <caption>Historical Alerts</caption>
                 <thead class="thead-dark bg-dark">
                     <tr>
+                        <td scope="col">Created</td>
                         <td scope="col">Title</td>
                         <td scope="col">Message</td>
                         <td scope="col">Priority</td>
                         <td scope="col">Active?</td>
-                        <td scope="col">Created</td>
                         <td scope="col">Updated</td>
                         <td scope="col">Last Notification</td>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for historical_alert in object_list %}
-                        {% include 'vigil/fragments/historical_list_alert.html' %}
-                    {% endfor %}
+                    <!--{% for historical_alert in object_list %}-->
+                        <!--{% include 'vigil/fragments/historical_list_alert.html' %}-->
+                    <!--{% endfor %}-->
                 </tbody>
             </table>
         </div>
@@ -40,7 +40,18 @@
         $(document).ready(function() {
             $('#historical-alerts').DataTable(
                 {
-                    "pagingType": "full"
+                    "pagingType": "full",
+                    "serverSide": true,
+                    "ajax": "{% url 'historical_alerts_datatable' pk=alert_channel.pk %}",
+                    "columns": [
+                        { "name": "alert_created" },
+                        { "name": "title" },
+                        { "name": "message" },
+                        { "name": "priority" },
+                        { "name": "active" },
+                        { "name": "last_updated" },
+                        { "name": "last_notification" }
+                    ]
                 }
             );
         } );

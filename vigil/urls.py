@@ -80,6 +80,12 @@ urlpatterns = [
         name='historical_alerts'
     ),
 
+    path(
+        'alert_channel/<int:pk>/historical_alerts/datatable',
+        views.AlertDataTablesView.as_view(),
+        name='historical_alerts_datatable'
+    ),
+
     # Preprocessor Alert Actions
 
     path(
@@ -169,5 +175,5 @@ urlpatterns = [
         'alert_action/<str:alert_type>/<int:pk>/results',
         views.TaskResultsListView.as_view(),
         name='task_results'
-    )
+    ),
 ]
