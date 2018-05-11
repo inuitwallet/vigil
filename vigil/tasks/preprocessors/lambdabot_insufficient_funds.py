@@ -45,7 +45,7 @@ class LambdaBotInsufficientFundsTask(Task):
                 'There are currently {:.4f} on order.'.format(
                     data['currency'],
                     data['exchange'],
-                    data['pair'],
+                    data['bot_name'],
                     float(data['target_amount']) - float(data['amount_available']),
                     float(data['target_amount']),
                     float(data['amount_available']),
