@@ -1,31 +1,30 @@
 {% extends 'base.html' %}
 
 {% block title %}
-All Alert Channels
+    History
 {% endblock %}
 
 {% block content %}
     <div class="row">
         <div class="col">
-            <h2>Alert Channels</h2>
+            <h2>Historical Results for the "{{ alert_action }}" Alert Action</h2>
         </div>
     </div>
     <div class="row">
         <div class="col">
-            <table id="alert-channels" class="table table-striped table-hover table-bordered">
-                <caption>All Alert Channels</caption>
+            <table id="task-results" class="table table-striped table-hover table-bordered">
+                <caption>Task Results</caption>
                 <thead class="thead-dark bg-dark">
                     <tr>
-                        <td scope="col">Name</td>
-                        <td scope="col">API id</td>
-                        <td scope="col">Expected Data</td>
-                        <td scope="col">Pre Processor</td>
-                        <td scope="col">Active Alerts</td>
+                        <td scope="col">Time</td>
+                        <td scope="col">State</td>
+                        <td scope="col">Result</td>
+                        <td scope="col">Task id</td>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for alert_channel in object_list %}
-                        {% include 'vigil/fragments/alert_channel_all.html' %}
+                    {% for task_result in object_list %}
+                        {% include 'vigil/fragments/task_list_result.html' %}
                     {% endfor %}
                 </tbody>
             </table>
@@ -36,7 +35,7 @@ All Alert Channels
 {% block endbodyjs %}
     <script>
         $(document).ready(function() {
-            $('#alert-channels').DataTable(
+            $('#task-results').DataTable(
                 {
                     "pagingType": "full"
                 }

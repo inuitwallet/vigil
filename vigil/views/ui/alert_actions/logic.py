@@ -1,5 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
+from django.core.paginator import Paginator
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, UpdateView, CreateView, DeleteView
 
@@ -14,6 +15,11 @@ class ShowLogicAlertActionsView(LoginRequiredMixin, ListView):
 class LogicAlertActionDetailView(LoginRequiredMixin, DetailView):
     model = LogicAlertAction
     template_name = 'vigil/alert_action/logic/detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['task_results'] = Paginator(self.object.task_results.all(), 8).page(1)
+        return context
 
 
 class LogicAlertActionUpdateView(LoginRequiredMixin, UpdateView):

@@ -40,7 +40,11 @@ Alert Actions
 {% block endbodyjs %}
     <script>
         $(document).ready(function() {
-            $('#logic-actions').DataTable();
+            $('#logic-actions').DataTable(
+                {
+                    "pagingType": "full"
+                }
+            );
         } );
     </script>
 {% endblock %}

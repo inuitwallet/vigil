@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    History
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col">
+            <h2>Historical alerts for the "{{ alert_channel }}" channel</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <table id="historical-alerts" class="table table-striped table-hover table-bordered">
+                <caption>Historical Alerts</caption>
+                <thead class="thead-dark bg-dark">
+                    <tr>
+                        <td scope="col">Title</td>
+                        <td scope="col">Message</td>
+                        <td scope="col">Priority</td>
+                        <td scope="col">Active?</td>
+                        <td scope="col">Created</td>
+                        <td scope="col">Updated</td>
+                        <td scope="col">Last Notification</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for historical_alert in object_list %}
+                        {% include 'vigil/fragments/historical_list_alert.html' %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+
+{% block endbodyjs %}
+    <script>
+        $(document).ready(function() {
+            $('#historical-alerts').DataTable();
+        } );
+    </script>
+{% endblock %}

@@ -38,7 +38,11 @@ Pre Processor Actions
 {% block endbodyjs %}
     <script>
         $(document).ready(function() {
-            $('#preprocessor-actions').DataTable();
+            $('#preprocessor-actions').DataTable(
+                {
+                    "pagingType": "full"
+                }
+            );
         } );
     </script>
 {% endblock %}

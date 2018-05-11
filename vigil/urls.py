@@ -49,29 +49,35 @@ urlpatterns = [
         name='active_alert_channel_list'
     ),
     path(
-        'all_alerts',
+        'alert_channels',
         views.ShowAllAlertsView.as_view(),
         name='all_alert_channel_list'
     ),
     path(
-        'alert/<int:pk>',
+        'alert_channel/<int:pk>',
         views.AlertChannelDetailView.as_view(),
         name='alert_channel_detail'
     ),
     path(
-        'alert/create',
+        'alert_channel/create',
         views.AlertChannelCreateView.as_view(),
         name='alert_channel_create'
     ),
     path(
-        'alert/<int:pk>/edit',
+        'alert_channel/<int:pk>/edit',
         views.AlertChannelUpdateView.as_view(),
         name='alert_channel_update'
     ),
     path(
-        'alert/<int:pk>/delete',
+        'alert_channel/<int:pk>/delete',
         views.AlertChannelDeleteView.as_view(),
         name='alert_channel_delete'
+    ),
+
+    path(
+        'alert_channel/<int:pk>/historical_alerts',
+        views.AlertListView.as_view(),
+        name='historical_alerts'
     ),
 
     # Preprocessor Alert Actions
@@ -157,4 +163,11 @@ urlpatterns = [
         views.NotificationAlertActionDeleteView.as_view(),
         name='notification_alert_action_delete'
     ),
+
+    # Task Results
+    path(
+        'alert_action/<str:alert_type>/<int:pk>/results',
+        views.TaskResultsListView.as_view(),
+        name='task_results'
+    )
 ]

@@ -41,11 +41,6 @@ thead {
     opacity: 0.5;
 }
 
-#historical-alerts-container, #alert-task-results-container {
-    max-height: 500px;
-    overflow-y: scroll;
-}
-
 input[type=checkbox]
 {
   /* Double-sized Checkboxes */
