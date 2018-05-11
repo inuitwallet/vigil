@@ -25,10 +25,6 @@
                 <label for="expected-data" class="control-label">Expected Data</label>
                 <textarea id="expected-data" class="form-control" readonly>{{ object.expected_data }}</textarea>
             </div>
-            <div class="form-group">
-                <label for="priority-levels" class="control-label">Priority Levels</label>
-                <textarea id="priority-levels" class="form-control" readonly>{{ object.priority_levels }}</textarea>
-            </div>
             <a href="{% url 'preprocessor_alert_action_update' pk=object.pk %}" role="button" class="btn btn-dark">Edit</a>
             {% if request.GET.back %}
                 <a href="{{ request.GET.back }}" role="button" class="btn btn-secondary">Back</a>
