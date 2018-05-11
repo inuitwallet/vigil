@@ -12,7 +12,7 @@ class LambdaBotInsufficientFundsTask(Task):
     """
     expected_data = {
         'exchange': '',
-        'pair': '',
+        'bot_name': '',
         'currency': '',
         'target_amount': '',
         'amount_available': '',
@@ -38,7 +38,7 @@ class LambdaBotInsufficientFundsTask(Task):
             raise Ignore()
 
         return {
-            'title': 'Refill {} on {} {}'.format(data['currency'], data['exchange'], data['pair']),
+            'title': 'Refill {} on {} for {}'.format(data['currency'], data['exchange'], data['bot_name']),
             'message': (
                 'There are not enough {} to place orders on the {} {} pair.\n'
                 'Require {:.4f} to reach the target of {:.4f} but there are only {:.4f} available.\n'

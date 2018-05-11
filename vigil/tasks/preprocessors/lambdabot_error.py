@@ -12,7 +12,7 @@ class LambdaBotErrorTask(Task):
     """
     expected_data = {
         'exchange': '',
-        'pair': '',
+        'bot_name': '',
         'action': '',
         'error': '',
     }

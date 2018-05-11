@@ -1,5 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
+from django.core.paginator import Paginator
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, DeleteView, UpdateView, CreateView
 
@@ -29,6 +30,11 @@ class ShowAllAlertsView(LoginRequiredMixin, ListView):
 class AlertChannelDetailView(LoginRequiredMixin, DetailView):
     model = AlertChannel
     template_name = 'vigil/alert_channel/detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['historical_alerts'] = Paginator(self.object.alert_set.all(), 10).page(1)
+        return context
 
 
 class AlertChannelUpdateView(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
