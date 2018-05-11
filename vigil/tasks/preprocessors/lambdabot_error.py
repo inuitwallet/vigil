@@ -36,7 +36,7 @@ class LambdaBotErrorTask(Task):
             raise Ignore()
 
         return {
-            'title': 'The {} bot reported and error on {}'.format(
+            'title': 'The {} bot reported an error on {}'.format(
                 data['bot_name'],
                 data['exchange']
             ),
