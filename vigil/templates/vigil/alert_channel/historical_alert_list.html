@@ -38,7 +38,11 @@
 {% block endbodyjs %}
     <script>
         $(document).ready(function() {
-            $('#historical-alerts').DataTable();
+            $('#historical-alerts').DataTable(
+                {
+                    "pagingType": "full"
+                }
+            );
         } );
     </script>
 {% endblock %}
