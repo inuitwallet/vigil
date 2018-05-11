@@ -3,7 +3,7 @@
 <tr>
     <td scope="col">{{ historical_alert.title }}</td>
     <td scope="col">{{ historical_alert.message }}</td>
-    <td scope="col" class="{{ alert.bootstrap_priority }}">{{ historical_alert.priority }}</td>
+    <td scope="col" class="{{ historical_alert.bootstrap_priority }}">{{ historical_alert.priority }}</td>
     <td scope="col">
         {% if historical_alert.active %}
             <img src="{% static 'vigil/img/svg/alert.svg' %}" data-toggle="tooltip" data-placement="bottom" title="Alert is currently active" />
