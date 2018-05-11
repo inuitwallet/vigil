@@ -36,10 +36,9 @@ class LambdaBotErrorTask(Task):
             raise Ignore()
 
         return {
-            'title': 'Error when attempting to {} on {} from {}'.format(
-                data['action'],
-                data['exchange'],
-                data['bot_name']
+            'title': 'The {} bot reported and error on {}'.format(
+                data['bot_name'],
+                data['exchange']
             ),
             'message': (
                 'The bot was attempting to {} when the following error occurred: {}'.format(
