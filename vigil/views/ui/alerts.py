@@ -36,6 +36,7 @@ class AlertDataTablesView(LoginRequiredMixin, View):
         # handle a search term
         search = request.GET.get('search[value]', '')
         query_set = Alert.objects.filter(alert_channel__pk=pk)
+        results_total = query_set.count()
 
         if search:
             # start with a blank Q object and add a query for every non-relational field attached to the model
@@ -72,7 +73,7 @@ class AlertDataTablesView(LoginRequiredMixin, View):
         return JsonResponse(
             {
                 'draw': draw,
-                'recordsTotal': query_set.count(),
+                'recordsTotal': results_total,
                 'recordsFiltered': query_set.count(),
                 'data': [
                     [
