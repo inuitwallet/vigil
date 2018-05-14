@@ -176,4 +176,10 @@ urlpatterns = [
         views.TaskResultsListView.as_view(),
         name='task_results'
     ),
+
+    path(
+        'alert_action/<str:alert_type>/<int:pk>/results/datatable',
+        views.TaskResultsDataTablesView.as_view(),
+        name='task_results_datatable'
+    ),
 ]

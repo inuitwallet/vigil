@@ -37,9 +37,17 @@
         $(document).ready(function() {
             $('#task-results').DataTable(
                 {
-                    "pagingType": "full"
+                    "pagingType": "full",
+                    "serverSide": true,
+                    "ajax": "{% url 'task_results_datatable' pk=alert_action.pk alert_type=alert_type %}",
+                    "columns": [
+                        { "name": "date_done" },
+                        { "name": "status" },
+                        { "name": "result" },
+                        { "name": "task_id" }
+                    ]
                 }
-            );
-        } );
+            )
+        });
     </script>
 {% endblock %}
