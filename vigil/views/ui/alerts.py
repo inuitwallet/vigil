@@ -1,5 +1,6 @@
 from math import ceil
 
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.http import JsonResponse
@@ -10,7 +11,7 @@ from django.views.generic import ListView
 from vigil.models import Alert, AlertChannel
 
 
-class AlertListView(ListView):
+class AlertListView(LoginRequiredMixin, ListView):
     model = Alert
     template_name = 'vigil/alert_channel/historical_alert_list.html'
 
@@ -25,7 +26,7 @@ class AlertListView(ListView):
         }
 
 
-class AlertDataTablesView(View):
+class AlertDataTablesView(LoginRequiredMixin, View):
     def get(self, request, pk):
         # get the basic parameters
         draw = int(request.GET.get('draw', 0))
@@ -52,7 +53,7 @@ class AlertDataTablesView(View):
         order_column_index = request.GET.get('order[0][column]')
         order_by = request.GET.get('columns[{}][name]'.format(order_column_index))
         order_direction = request.GET.get('order[0][dir]')
-        print(order_direction)
+
         if order_direction == 'desc':
             order_by = '-{}'.format(order_by)
 
@@ -88,16 +89,11 @@ class AlertDataTablesView(View):
                             Context({'alert': alert})
                         ),
                         Template(
-                            '{% load static %}'
-                            '<td scope="col">'
-                            '  {% if alert.active %}'
-                            '    <img src="{% static \'vigil/img/svg/alert.svg\' %}" '
-                            '    data-toggle="tooltip" data-placement="bottom" title="Alert is currently active" />'
-                            '  {% else %}'
-                            '    <img src="{% static \'vigil/img/svg/circle-slash.svg\' %}" '
-                            '    data-toggle="tooltip" data-placement="bottom" title="Alert has been acknowledged" />'
-                            '  {% endif %}'
-                            '</td>'
+                            '{% if alert.active %}'
+                            '   <p class="text-danger">Active</p>'
+                            '{% else %}'
+                            '   Acknowledged'
+                            '{% endif %}'
                         ).render(
                             Context({'alert': alert})
                         ),
