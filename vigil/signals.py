@@ -2,12 +2,14 @@ import json
 import logging
 
 from celery.signals import task_postrun
+from celery import uuid, signature, group
 
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 from django.template.loader import render_to_string
 from django.utils.timezone import now
 
+from vigil import tasks
 from vigil.models import VigilTaskResult, Alert
 
 logger = logging.getLogger(__name__)
@@ -56,6 +58,10 @@ def postrun_handler(sender=None, headers=None, body=None, **kwargs):
             # create the alert object and update the Alert Channel History and Active Alerts list
             # this returns the alert object
             update_preprocessor_tasks(alert_details, task_result.alert_channel, channel_layer)
+            # run the logic actions
+            # pass the data that triggered this preprocessor as logic tasks will need that
+            data = kwargs.get('kwargs', {}).get('data')
+            run_logic_actions(data, alert_details, task_result.alert_channel)
 
         if action_type == 'logic':
             pass
@@ -116,3 +122,41 @@ def update_preprocessor_tasks(alert_details, alert_channel, channel_layer):
             )
         }
     )
+
+
+def run_logic_actions(data, alert_details, alert_channel):
+    """
+    Run the Logic actions after the preprocessor has completed successfully.
+    Generally they will need the data that is passed to the preprocessor task in addition to their own
+    :param data:
+    :param alert_details:
+    :param alert_channel:
+    :return:
+    """
+    # We then run the Logic actions as a group (in parallel)
+    logic_actions = []
+
+    data['title'] = alert_details['title']
+    data['message'] = alert_details['message']
+
+    for logic_action in alert_channel.logic_actions.all():
+        logic_task = getattr(tasks, logic_action.task.name)
+        task_id = uuid()
+        VigilTaskResult.objects.create(
+            alert_channel=alert_channel,
+            alert_task_object=logic_action,
+            task_id=task_id
+        )
+        logic_sig = signature(
+            logic_task,
+            kwargs={
+                'data': data,
+                'business_logic_data': logic_action.business_logic_data
+            },
+            task_id=task_id,
+            immutable=True
+        )
+        logic_actions.append(logic_sig)
+
+    logic_group = group(logic_actions)
+    logic_group.apply_async()
