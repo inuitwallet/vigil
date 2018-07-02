@@ -112,7 +112,7 @@ class OversightTask(Task):
 
         response = self.handle_response(
             requests.post(
-                url='http://127.0.0.1:8000/bot/report_error',
+                url='https://oversight.crypto-daio.co.uk/bot/report_error',
                 data={
                     'name': name,
                     'exchange': exchange,
