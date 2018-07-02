@@ -4,7 +4,7 @@ from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 
 from vigil.models import AlertChannel, Alert
-from celery import uuid, signature, group, chord, chain
+from celery import uuid, signature
 
 from vigil import tasks
 from vigil.models import VigilTaskResult
@@ -56,32 +56,9 @@ class AlertVigil(View):
             immutable=True
         )
         # run the preprocessor async.
-        # when this has finished, the notifications tasks will run.
+        # when this has finished, the logic tasks will run.
         # This is handled by the signals
+        # Notification swill be run by the periodic tasks
         preprocessor_sig.apply_async()
-
-        # We then run the Logic actions as a group (in parallel)
-        logic_actions = []
-
-        for logic_action in alert_channel.logic_actions.all():
-            logic_task = getattr(tasks, logic_action.task.name)
-            task_id = uuid()
-            VigilTaskResult.objects.create(
-                alert_channel=alert_channel,
-                alert_task_object=logic_action,
-                task_id=task_id
-            )
-            logic_sig = signature(
-                logic_task,
-                kwargs={
-                    'data': request.POST
-                },
-                task_id=task_id,
-                immutable=True
-            )
-            logic_actions.append(logic_sig)
-
-        logic_group = group(logic_actions)
-        logic_group.apply_async()
 
         return JsonResponse({'success': True})

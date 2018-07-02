@@ -9,7 +9,6 @@ from vigil.models import AlertChannel, VigilTaskResult
 from vigil.celery import app
 
 
-
 @app.task
 def refresh_ui():
     """

@@ -1,6 +1,3 @@
-from itertools import chain
-
-from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
@@ -8,6 +5,7 @@ from django.views.generic import CreateView, DeleteView
 
 
 from vigil.models import NotificationAlertAction
+from vigil.models.alert_actions import AlertAction
 
 
 class NotificationAlertActionCreateView(
