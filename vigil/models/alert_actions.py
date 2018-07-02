@@ -20,7 +20,7 @@ def equalize_json(dict_1, dict_2):
         if key not in dict_1.keys():
             del (dict_2_copy[key])
 
-    return dict_2
+    return dict_2_copy
 
 
 class AlertAction(models.Model):
