@@ -1,6 +1,6 @@
-from .oversight import Oversight
+from .overwatch import Overwatch
 
 
 __all__ = [
-    'Oversight'
+    'Overwatch'
 ]

@@ -11,9 +11,9 @@ from celery.exceptions import Ignore
 from vigil.celery import app
 
 
-class OversightTask(Task):
+class OverwatchTask(Task):
     """
-    Report the given error to oversight
+    Report the given error to overwatch
     """
     expected_data = {
         'bot_name': '',
@@ -66,7 +66,7 @@ class OversightTask(Task):
         if r.status_code != requests.codes.ok:
             self.update_state(
                 state=states.FAILURE,
-                meta='oversight gave a bad response code: {} {}'.format(r.status_code, r.text)
+                meta='overwatch gave a bad response code: {} {}'.format(r.status_code, r.text)
             )
             return False
 
@@ -75,14 +75,14 @@ class OversightTask(Task):
         except ValueError:
             self.update_state(
                 state=states.FAILURE,
-                meta='oversight did not return valid JSON: {}'.format(r.text)
+                meta='overwatch did not return valid JSON: {}'.format(r.text)
             )
             return False
 
         if not response.get('success', True):
             self.update_state(
                 state=states.FAILURE,
-                meta='oversight reported a failure: {}'.format(response)
+                meta='overwatch reported a failure: {}'.format(response)
             )
             return False
 
@@ -112,7 +112,7 @@ class OversightTask(Task):
 
         response = self.handle_response(
             requests.post(
-                url='https://oversight.crypto-daio.co.uk/bot/report_error',
+                url='https://overwatch.crypto-daio.co.uk/bot/report_error',
                 data={
                     'name': name,
                     'exchange': exchange,
@@ -131,4 +131,4 @@ class OversightTask(Task):
         return response
 
 
-Oversight = app.register_task(OversightTask())
+Overwatch = app.register_task(OverwatchTask())
