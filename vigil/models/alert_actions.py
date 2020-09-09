@@ -1,7 +1,7 @@
 from copy import copy
 
 from django.contrib.contenttypes.fields import GenericRelation
-from django.contrib.postgres.fields import JSONField
+from django.db.models import JSONField
 from django.db import models
 
 from .task_results import VigilTaskResult
