@@ -178,5 +178,5 @@ MESSAGE_TAGS = {
 try:
     from vigil.local_settings import *  # noqa
 except ImportError:
-    print("Could not import graphite.local_settings, using defaults!")
+    print("Could not import vigil.local_settings, using defaults!")
 

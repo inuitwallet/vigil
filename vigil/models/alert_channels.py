@@ -2,7 +2,7 @@ from datetime import timedelta
 from uuid import uuid4
 
 from django.db import models
-from django.contrib.postgres.fields import JSONField
+from django.db.models import JSONField
 from django.utils.timezone import now
 
 from vigil.globals import priorities, bootstrap_priorities
