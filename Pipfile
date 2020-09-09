@@ -1,0 +1,23 @@
+[[source]]
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+boto3 = "*"
+bpython = "*"
+celery = "*"
+channels = "*"
+channels-redis = "*"
+Django = "*"
+django-bootstrap-form = "*"
+django-celery-beat = "*"
+django-celery-results = "*"
+django-extra-views = "*"
+django-storages = "*"
+psycopg2-binary = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.8"
