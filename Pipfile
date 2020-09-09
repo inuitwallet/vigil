@@ -16,6 +16,7 @@ django-celery-results = "*"
 django-extra-views = "*"
 django-storages = "*"
 psycopg2-binary = "*"
+redis = "*"
 
 [dev-packages]
 
